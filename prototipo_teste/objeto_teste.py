@@ -9,7 +9,6 @@ class Objeto(ABC):
         self.__tamanho_y = 0
         self.__velocidade = 0
         self.__vida = 0
-        self.__ativo = 0
 
     ##############
     #getters e setters
@@ -68,22 +67,13 @@ class Objeto(ABC):
     def vida(self, vida: int):
         self.__vida = vida
 
-    #ativo
-    @property
-    def ativo(self):
-        return self.__ativo
-
-    @ativo.setter
-    def ativo(self, ativo: int):
-        self.__ativo = ativo
-
     ##################
     #métodos abstratos
     @abstractmethod
-    def desenhar(self, posicao_x, posicao_y):
+    def desenhar(self, surface):
         pass
 
-    @abstractmethod 
+    @abstractmethod
     def mover(self):
         pass
 
