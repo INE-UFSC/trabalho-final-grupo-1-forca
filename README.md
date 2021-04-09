@@ -1,5 +1,5 @@
 # Observação dos estudantes: 
-## O path para carregar as imagens do jogo variou conforme o Sistema Operacional no qual estávamos executando o protótipo do jogo. Por esse motivo, dependendo do ambiente onde o protótipo será executado, talvez seja necessário alterar o path para carregamento das imagens (que estão no diretório 'assets')
+O path para carregar as imagens do jogo variou conforme o Sistema Operacional no qual estávamos executando o protótipo do jogo. Por esse motivo, dependendo do ambiente onde o protótipo será executado, talvez seja necessário alterar o path para carregamento das imagens (que estão no diretório 'assets')
 
 # Modelo para o Trabalho Final de POO-II
 Esse modelo contém uma estrutura pronta para entrega de todas as etapas do Trabalho Final (TF) de POO-II.
