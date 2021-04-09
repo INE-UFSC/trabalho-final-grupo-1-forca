@@ -17,21 +17,21 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Jogo Teste")
 
 #carregando imagem do jogador
-JOGADOR = pygame.transform.scale(pygame.image.load(os.path.join("D:/Users/josed/Desktop/jogo_teste/assets", "jogador.png")), (WH_JOGADOR, WH_JOGADOR))
+JOGADOR = pygame.transform.scale(pygame.image.load("../assets/jogador.png"), (WH_JOGADOR, WH_JOGADOR))
 
 #carregando imagem dos aliens inimigos
-ALIEN_1 = pygame.transform.scale(pygame.image.load(os.path.join("D:/Users/josed/Desktop/jogo_teste/assets", "alien_1.png")), (WH_INIMIGO, WH_INIMIGO))
-ALIEN_2 = pygame.transform.scale(pygame.image.load(os.path.join("D:/Users/josed/Desktop/jogo_teste/assets", "alien_2.png")), (WH_INIMIGO, WH_INIMIGO))
-ALIEN_3 = pygame.transform.scale(pygame.image.load(os.path.join("D:/Users/josed/Desktop/jogo_teste/assets", "alien_3.png")), (WH_INIMIGO, WH_INIMIGO))
+ALIEN_1 = pygame.transform.scale(pygame.image.load("../assets/alien_1.png"), (WH_INIMIGO, WH_INIMIGO))
+ALIEN_2 = pygame.transform.scale(pygame.image.load("../assets/alien_2.png"), (WH_INIMIGO, WH_INIMIGO))
+ALIEN_3 = pygame.transform.scale(pygame.image.load("../assets/alien_3.png"), (WH_INIMIGO, WH_INIMIGO))
 
 #carregando imagem dos lasers
-LASER_1 = pygame.image.load(os.path.join("D:/Users/josed/Desktop/jogo_teste/assets", "laser_1.png"))
-LASER_2 = pygame.image.load(os.path.join("D:/Users/josed/Desktop/jogo_teste/assets", "laser_2.png"))
-LASER_3 = pygame.image.load(os.path.join("D:/Users/josed/Desktop/jogo_teste/assets", "laser_3.png"))
-LASER_4 = pygame.image.load(os.path.join("D:/Users/josed/Desktop/jogo_teste/assets", "laser_4.png"))
+LASER_1 = pygame.image.load("../assets/laser_1.png")
+LASER_2 = pygame.image.load("../assets/laser_2.png")
+LASER_3 = pygame.image.load("../assets/laser_3.png")
+LASER_4 = pygame.image.load("../assets/laser_4.png")
 
 #carregando imagem do plano de funo
-PLANO_DE_FUNDO = pygame.transform.scale(pygame.image.load(os.path.join("D:/Users/josed/Desktop/jogo_teste/assets", "plano_de_fundo.png")), (WIDTH, HEIGHT))
+PLANO_DE_FUNDO = pygame.transform.scale(pygame.image.load("../assets/plano_de_fundo.png"), (WIDTH, HEIGHT))
 
 def colidir(objeto1, objeto2):
     offset_x = objeto2.x - objeto1.x
