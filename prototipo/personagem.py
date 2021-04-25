@@ -1,14 +1,12 @@
-from abc import ABC, abstractmethod
 import pygame
+from abc import ABC, abstractmethod
 from laser import Laser
-
-WIDTH, HEIGHT = 750, 750
 
 class Personagem(ABC):
     RESFRIAMENTO = 20
 
     @abstractmethod
-    def __init__(self, x: int, y: int, saude = 100):
+    def __init__(self, x: int, y: int, height: int, saude = 100):
         self.__x = x
         self.__y = y
         self.__saude = saude
@@ -16,6 +14,7 @@ class Personagem(ABC):
         self.__contador_resfriamento_laser = 0
         self.personagem_img = None
         self.laser_img = None
+        self.height = height
     
     @property
     def x(self):
@@ -64,7 +63,7 @@ class Personagem(ABC):
         for laser in self.lasers:
             laser.movimentar(velocidade)
 
-            if laser.fora_da_tela(HEIGHT):
+            if laser.fora_da_tela(self.height):
                 self.lasers.remove(laser)
             elif laser.colisao(objeto):
                 objeto.saude -= 10

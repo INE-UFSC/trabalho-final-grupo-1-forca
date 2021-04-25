@@ -1,5 +1,5 @@
-from personagem import Personagem
 import pygame
+from personagem import Personagem
 
 WH_JOGADOR = 80
 WH_INIMIGO = 50
@@ -12,7 +12,6 @@ ALIEN_3 = pygame.transform.scale(pygame.image.load("../assets/alien_3.png"), (WH
 LASER_1 = pygame.image.load("../assets/laser_1.png")
 LASER_2 = pygame.image.load("../assets/laser_2.png")
 LASER_3 = pygame.image.load("../assets/laser_3.png")
-LASER_4 = pygame.image.load("../assets/laser_4.png")
 
 
 class Inimigo(Personagem):
@@ -22,8 +21,8 @@ class Inimigo(Personagem):
                     "3": (ALIEN_3, LASER_3)
                 }
 
-    def __init__(self, x: int, y: int, id, saude = 100):
-        super().__init__(x, y, saude)
+    def __init__(self, x: int, y: int, id, height: int, saude = 100):
+        super().__init__(x, y, height, saude)
         self.personagem_img, self.laser_img = self.ID_MAP[id]
         self.__mascara = pygame.mask.from_surface(self.personagem_img) #essa mascara pega o personagem_img e diz quais pixels ele está e nãoe stá ocupando, o que é necessário para a ser detectado a colisão
 

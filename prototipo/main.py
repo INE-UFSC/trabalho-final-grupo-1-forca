@@ -5,21 +5,16 @@ import random
 
 #importar 
 from laser import Laser
-from inimigo import Inimigo
 from jogador import Jogador
+from inimigo import Inimigo
+from meteoro import Meteoro
 
-pygame.font.init()
+pygame.init()
 
 #definindo altura e largura da janela do meu jogo
 WIDTH, HEIGHT = 750, 750
 WH_JOGADOR = 80
 WH_INIMIGO = 50
-
-#carregando imagem dos lasers
-LASER_1 = pygame.image.load("../assets/laser_1.png")
-LASER_2 = pygame.image.load("../assets/laser_2.png")
-LASER_3 = pygame.image.load("../assets/laser_3.png")
-LASER_4 = pygame.image.load("../assets/laser_4.png")
 
 #carregando imagem do jogador
 JOGADOR = pygame.transform.scale(pygame.image.load("../assets/jogador.png"), (WH_JOGADOR, WH_JOGADOR))
@@ -47,15 +42,24 @@ def main():
     fonte = pygame.font.SysFont("comicsans", 50)
     fonte_fim_de_jogo = pygame.font.SysFont("comicsans", 60)
     clock = pygame.time.Clock()
-    movimento_jogador = 8
+
+    #variáveis pro inimigo
     inimigos = []
     onda_de_inimigos = 5
     velocidade_inimigo = 2
+
+    #variáveis pro meteoro
+    meteoros = []
+    onda_de_meteoros = 2
+    velocidade_meteoro = 1
+
     velocidade_laser = 7
     height_barra = 10
     saude = 100
-
-    jogador = Jogador(int(WIDTH/2 - JOGADOR.get_width()/2), int(HEIGHT-125), saude)
+    
+    movimento_jogador = 8
+    jogador = Jogador(int(WIDTH/2 - JOGADOR.get_width()/2), int(HEIGHT-125), HEIGHT, saude)
+    
     fim_de_jogo = False
     contador_fim_de_jogo = 0
 
@@ -72,6 +76,9 @@ def main():
         for inimigo in inimigos:
             inimigo.desenhar(WIN)
 
+        for meteoro in meteoros:
+            meteoro.desenhar(WIN)
+            
         jogador.desenhar(WIN, height_barra)
 
         if fim_de_jogo:
@@ -103,14 +110,52 @@ def main():
             else:
                 continue
 
+        #lógica do inimigo
         if len(inimigos) == 0:
             nivel += 1
             onda_de_inimigos += 5
 
             for i in range(onda_de_inimigos):
-                inimigo = Inimigo(random.randrange(50, WIDTH-128), random.randrange(-10000*(nivel/5), -128), str(random.randrange(1, 4)), saude) #ver depois sobre o -1500
+                inimigo = Inimigo(random.randrange(50, WIDTH-128), random.randrange(-10000*(nivel/5), -128), str(random.randrange(1, 4)), HEIGHT, saude) #ver depois sobre o -1500
                 inimigos.append(inimigo)
+
+        for inimigo in inimigos[:]:
+            inimigo.movimentar(velocidade_inimigo)
+            inimigo.mover_lasers(velocidade_laser, jogador)
+
+            if random.randrange(0, 4*FPS) == 1:
+                inimigo.atirar()
+
+            if colidir(inimigo, jogador):
+                jogador.saude -= 10
+                inimigos.remove(inimigo)
+
+            elif inimigo.y + inimigo.get_height()  > HEIGHT:
+                inimigos.remove(inimigo)
         
+        #lógica do meteoro
+        if len(meteoros) == 0:
+            onda_de_meteoros += 2
+            onde = random.randrange(1,3)
+
+            for i in range(onda_de_meteoros):
+                if onde == 2:
+                    meteoro = Meteoro(random.randrange(50, WIDTH-128), random.randrange(-10000*(nivel/5), -128), HEIGHT, WIDTH)
+                else:
+                    meteoro = Meteoro(random.randrange(-10000*(nivel/5), -128), random.randrange(0, WIDTH-128), HEIGHT, WIDTH)
+
+                meteoros.append(meteoro)
+
+        for meteoro in meteoros[:]:
+            meteoro.movimentar(velocidade_meteoro)
+
+            if colidir(meteoro, jogador):
+                jogador.saude -= 15
+                meteoros.remove(meteoro)
+            
+            elif meteoro.y + meteoro.get_height() > HEIGHT or meteoro.x + meteoro.get_width() > WIDTH:
+                meteoros.remove(meteoro)
+
 
         #vai passar por todos os eventos que ocorreram, 60 vezes por segundo
         for event in pygame.event.get():
@@ -132,23 +177,8 @@ def main():
         if teclas[pygame.K_s] and jogador.y + movimento_jogador + jogador.get_height() + 2*height_barra < HEIGHT: #baixo
             jogador.y += movimento_jogador
         
-
-        for inimigo in inimigos[:]:
-            inimigo.movimentar(velocidade_inimigo)
-            inimigo.mover_lasers(velocidade_laser, jogador)
-
-            if random.randrange(0, 4*FPS) == 1:
-                inimigo.atirar()
-
-            if colidir(inimigo, jogador):
-                jogador.saude -= 10
-                inimigos.remove(inimigo)
-
-            elif inimigo.y + inimigo.get_height()  > HEIGHT:
-                
-                inimigos.remove(inimigo)
-
-        jogador.mover_lasers(-velocidade_laser, inimigos)
+        
+        jogador.mover_lasers(-velocidade_laser, inimigos, meteoros)
 
 def main_menu():
     fonte_titulo = pygame.font.SysFont("comicsans", 60)
