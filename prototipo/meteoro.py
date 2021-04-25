@@ -1,11 +1,6 @@
 import pygame
 from objeto import Objeto
 
-WH_JOGADOR = 80
-WH_INIMIGO = 50
-W_METEORO = 66
-H_METEORO = 176
-
 #carregando imagem dos meteoros
 METEORO = pygame.image.load("../assets/meteoro.png")
 

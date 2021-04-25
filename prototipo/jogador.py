@@ -2,7 +2,6 @@ import pygame
 from personagem import Personagem
 
 WH_JOGADOR = 80
-WH_INIMIGO = 50
 
 LASER_JOGADOR = pygame.image.load("../assets/laser_4.png")
 
