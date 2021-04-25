@@ -1,8 +1,13 @@
-from abc import ABC, abstractmethod
 import pygame
 import os
 import time
 import random
+
+#importar 
+from laser import Laser
+from inimigo import Inimigo
+from jogador import Jogador
+
 pygame.font.init()
 
 #definindo altura e largura da janela do meu jogo
@@ -10,25 +15,20 @@ WIDTH, HEIGHT = 750, 750
 WH_JOGADOR = 80
 WH_INIMIGO = 50
 
-#definindo que minha janela tera a largura e altura especificada
-WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-
-#nome que aparece na aba da janela
-pygame.display.set_caption("Jogo Teste")
-
-#carregando imagem do jogador
-JOGADOR = pygame.transform.scale(pygame.image.load("../assets/jogador.png"), (WH_JOGADOR, WH_JOGADOR))
-
-#carregando imagem dos aliens inimigos
-ALIEN_1 = pygame.transform.scale(pygame.image.load("../assets/alien_1.png"), (WH_INIMIGO, WH_INIMIGO))
-ALIEN_2 = pygame.transform.scale(pygame.image.load("../assets/alien_2.png"), (WH_INIMIGO, WH_INIMIGO))
-ALIEN_3 = pygame.transform.scale(pygame.image.load("../assets/alien_3.png"), (WH_INIMIGO, WH_INIMIGO))
-
 #carregando imagem dos lasers
 LASER_1 = pygame.image.load("../assets/laser_1.png")
 LASER_2 = pygame.image.load("../assets/laser_2.png")
 LASER_3 = pygame.image.load("../assets/laser_3.png")
 LASER_4 = pygame.image.load("../assets/laser_4.png")
+
+#carregando imagem do jogador
+JOGADOR = pygame.transform.scale(pygame.image.load("../assets/jogador.png"), (WH_JOGADOR, WH_JOGADOR))
+
+#definindo que minha janela tera a largura e altura especificada
+WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+
+#nome que aparece na aba da janela
+pygame.display.set_caption("Jogo Teste")
 
 #carregando imagem do plano de funo
 PLANO_DE_FUNDO = pygame.transform.scale(pygame.image.load("../assets/plano_de_fundo.png"), (WIDTH, HEIGHT))
@@ -38,207 +38,6 @@ def colidir(objeto1, objeto2):
     offset_y = objeto2.y - objeto1.y
     
     return objeto1.mascara.overlap(objeto2.mascara, (offset_x, offset_y)) != None
-
-
-class Laser():
-    def __init__(self, x: int, y: int, laser_img):
-        self.__x = x
-        self.__y = y
-        self.__laser_img = laser_img
-        self.__mascara = pygame.mask.from_surface(self.laser_img)
-
-    @property
-    def x(self):
-        return self.__x
-
-    @property
-    def y(self):
-        return self.__y
-    
-    @property
-    def laser_img(self):
-        return self.__laser_img
-    
-    @property
-    def mascara(self):
-        return self.__mascara
-
-    @x.setter
-    def x(self, x: int):
-        self.__x = x
-
-    @y.setter
-    def y(self, y: int):
-        self.__y = y
-
-    def desenhar(self, window):
-        window.blit(self.laser_img, (self.x, self.y))
-
-    def movimentar(self, velocidade):
-        self.y += velocidade
-    
-    def fora_da_tela(self, height):
-        return not(self.y <= height and self.y >= 0)
-    
-    def colisao(self, objeto):
-        return colidir(self, objeto)
-
-
-class Personagem(ABC):
-    RESFRIAMENTO = 20
-
-    @abstractmethod
-    def __init__(self, x: int, y: int, saude = 100):
-        self.__x = x
-        self.__y = y
-        self.__saude = saude
-        self.__lasers = []
-        self.__contador_resfriamento_laser = 0
-        self.personagem_img = None
-        self.laser_img = None
-    
-    @property
-    def x(self):
-        return self.__x
-
-    @property
-    def y(self):
-        return self.__y
-
-    @property
-    def saude(self):
-        return self.__saude
-    
-    @property
-    def lasers(self):
-        return self.__lasers
-    
-    @property
-    def contador_resfriamento_laser(self):
-        return self.__contador_resfriamento_laser
-
-    @x.setter
-    def x(self, x: int):
-        self.__x = x
-
-    @y.setter
-    def y(self, y: int):
-        self.__y = y
-
-    @saude.setter
-    def saude(self, saude: int):
-        self.__saude = saude
-    
-    @contador_resfriamento_laser.setter
-    def contador_resfriamento_laser(self, contador_resfriamento_laser):
-        self.__contador_resfriamento_laser = contador_resfriamento_laser
-    
-    def desenhar(self, window):
-        window.blit(self.personagem_img, (self.x, self.y))
-
-        for laser in self.lasers:
-            laser.desenhar(window)
-
-    def mover_lasers(self, velocidade, objeto):
-        self.resfriamento_laser()
-        for laser in self.lasers:
-            laser.movimentar(velocidade)
-
-            if laser.fora_da_tela(HEIGHT):
-                self.lasers.remove(laser)
-            elif laser.colisao(objeto):
-                objeto.saude -= 10
-                self.lasers.remove(laser)
-
-    def resfriamento_laser(self):
-        if self.contador_resfriamento_laser >= self.RESFRIAMENTO:
-            self.contador_resfriamento_laser = 0
-        elif self.contador_resfriamento_laser > 0:
-            self.contador_resfriamento_laser += 1
-
-    def atirar(self):
-        if self.contador_resfriamento_laser == 0:
-            laser = Laser(int(self.x + (self.personagem_img.get_width()/2) - (self.laser_img.get_width()/2)), int(self.y-10), self.laser_img)
-            self.lasers.append(laser)
-            self.contador_resfriamento_laser = 1
-
-    def get_width(self):
-        return self.personagem_img.get_width()
-    
-    def get_height(self):
-        return self.personagem_img.get_height()
-    
-
-class Jogador(Personagem):
-    def __init__(self, x: int, y: int, saude = 100):
-        super().__init__(x, y, saude)
-        self.personagem_img = JOGADOR
-        self.laser_img = LASER_4
-        self.__mascara = pygame.mask.from_surface(self.personagem_img) #essa mascara pega o personagem_img e diz quais pixels ele está e nãoe stá ocupando, o que é necessário para a ser detectado a colisão
-        self.__max_saude = saude
-
-    @property
-    def mascara(self):
-        return self.__mascara
-
-    @property
-    def max_saude(self):
-        return self.__max_saude
-
-    @mascara.setter
-    def mascara(self, mascara):
-        self.__mascara = mascara
-
-    @max_saude.setter
-    def max_saude(self, max_saude: int):
-        self.__max_saude = max_saude
-    
-    def mover_lasers(self, velocidade, objetos):
-        self.resfriamento_laser()
-        for laser in self.lasers:
-            laser.movimentar(velocidade)
-
-            if laser.fora_da_tela(HEIGHT):
-                self.lasers.remove(laser)
-            else:
-                for objeto in objetos:
-                    if laser.colisao(objeto):
-                        objetos.remove(objeto)
-                        if laser in self.lasers:
-                            self.lasers.remove(laser)
-    
-    def desenhar(self, window, height_barra):
-        super().desenhar(window)
-        self.barra_de_saude(window, height_barra)
-
-    def barra_de_saude(self, window, height_barra):
-        pygame.draw.rect(window, (248, 12, 58), (self.x, self.y + self.personagem_img.get_height() + height_barra, self.personagem_img.get_width(), height_barra))
-        pygame.draw.rect(window, (29, 189, 106), (self.x, self.y + self.personagem_img.get_height() + height_barra, self.personagem_img.get_width() * (self.saude/self.max_saude), height_barra))
-
-
-class Inimigo(Personagem):
-    ID_MAP =    {
-                    "1": (ALIEN_1, LASER_1),
-                    "2": (ALIEN_2, LASER_2),
-                    "3": (ALIEN_3, LASER_3)
-                }
-
-    def __init__(self, x: int, y: int, id, saude = 100):
-        super().__init__(x, y, saude)
-        self.personagem_img, self.laser_img = self.ID_MAP[id]
-        self.__mascara = pygame.mask.from_surface(self.personagem_img) #essa mascara pega o personagem_img e diz quais pixels ele está e nãoe stá ocupando, o que é necessário para a ser detectado a colisão
-
-    @property
-    def mascara(self):
-        return self.__mascara
-
-    @mascara.setter
-    def mascara(self, mascara):
-        self.__mascara = mascara
-
-    def movimentar(self, velocidade):
-        self.y += velocidade
-            
 
 def main():
     run = True
@@ -287,7 +86,7 @@ def main():
         desenhar_janela()
         
         if jogador.saude <= 0:
-            if vidas >= 2:
+            if vidas >= 1:
                 jogador.saude = saude
                 vidas -= 1
             else:
@@ -346,7 +145,7 @@ def main():
                 inimigos.remove(inimigo)
 
             elif inimigo.y + inimigo.get_height()  > HEIGHT:
-                vidas -= 1
+                
                 inimigos.remove(inimigo)
 
         jogador.mover_lasers(-velocidade_laser, inimigos)
