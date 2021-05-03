@@ -39,7 +39,6 @@ class Jogador(Personagem):
 
     def inc_pontuacao(self, inc_pontuacao):  #Incrementa a pontuação
         self.__pontuacao += inc_pontuacao
-        print(f"inc_pontuacao: {self.__pontuacao}")
 
     #Sobrescreve método mover_lasers() de Personagem
     def mover_lasers(self, velocidade, objetos, meteoros):
@@ -54,7 +53,6 @@ class Jogador(Personagem):
                     if laser.colisao(objeto):  # Colisão do laser do jogador contra o inimigo
                         objetos.remove(objeto)
                         self.__pontuacao += 100  # Aumenta a pontuação caso algum inimigo seja atingido
-                        print(f"mover_laser: {self.__pontuacao}")
                         if laser in self.lasers:
                             self.lasers.remove(laser)
 

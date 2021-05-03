@@ -39,11 +39,11 @@ def colidir(objeto1, objeto2):
     
     return objeto1.mascara.overlap(objeto2.mascara, (offset_x, offset_y)) != None
 
-def main(nome: str):
+def main():
     run = True
     FPS = 60
     nivel = 0
-    vidas = 1
+    vidas = 5
     fonte = pygame.font.SysFont("comicsans", 50)
     fonte_fim_de_jogo = pygame.font.SysFont("comicsans", 60)
     clock = pygame.time.Clock()
@@ -60,7 +60,7 @@ def main(nome: str):
 
     velocidade_laser = 7
     height_barra = 10
-    saude = 30
+    saude = 100
     
     movimento_jogador = 8
     jogador = Jogador(int(WIDTH/2 - JOGADOR.get_width()/2), int(HEIGHT-125), HEIGHT, saude)
@@ -70,7 +70,7 @@ def main(nome: str):
     contador_fim_de_jogo = 0
 
     def salvar_pontuacao():
-        ranking.add(nome, jogador.pontuacao)
+        ranking.add("nome", jogador.pontuacao)
         print(ranking.get_all())
 
     def desenhar_janela():
@@ -198,7 +198,6 @@ def main(nome: str):
     salvar_pontuacao()
 
 def main_menu():
-    nome = input("Informe seu nome: ")
     fonte_titulo = pygame.font.SysFont("comicsans", 60)
     run = True
 
@@ -214,7 +213,7 @@ def main_menu():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                main(nome)
+                main()
     pygame.quit()
 
 
