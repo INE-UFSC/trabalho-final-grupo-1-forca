@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 class Objeto(ABC):
 
     @abstractmethod
-    def __init__(self, x: int, y: int, height: int, width:int):
+    def __init__(self, x: int, y: int, height: int, width: int):
         self.__x = x
         self.__y = y
         self.objeto_img = None

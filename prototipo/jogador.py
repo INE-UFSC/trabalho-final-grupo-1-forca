@@ -15,6 +15,7 @@ class Jogador(Personagem):
         self.laser_img = LASER_JOGADOR
         self.__mascara = pygame.mask.from_surface(self.personagem_img) #essa mascara pega o personagem_img e diz quais pixels ele está e nãoe stá ocupando, o que é necessário para a ser detectado a colisão
         self.__max_saude = saude
+        self.__pontuacao = 0
 
     @property
     def mascara(self):
@@ -24,6 +25,10 @@ class Jogador(Personagem):
     def max_saude(self):
         return self.__max_saude
 
+    @property
+    def pontuacao(self):
+        return self.__pontuacao
+
     @mascara.setter
     def mascara(self, mascara):
         self.__mascara = mascara
@@ -31,7 +36,12 @@ class Jogador(Personagem):
     @max_saude.setter
     def max_saude(self, max_saude: int):
         self.__max_saude = max_saude
-    
+
+    def inc_pontuacao(self, inc_pontuacao):  #Incrementa a pontuação
+        self.__pontuacao += inc_pontuacao
+        print(f"inc_pontuacao: {self.__pontuacao}")
+
+    #Sobrescreve método mover_lasers() de Personagem
     def mover_lasers(self, velocidade, objetos, meteoros):
         self.resfriamento_laser()
         for laser in self.lasers:
@@ -41,8 +51,10 @@ class Jogador(Personagem):
                 self.lasers.remove(laser)
             else:
                 for objeto in objetos:
-                    if laser.colisao(objeto):
+                    if laser.colisao(objeto):  # Colisão do laser do jogador contra o inimigo
                         objetos.remove(objeto)
+                        self.__pontuacao += 100  # Aumenta a pontuação caso algum inimigo seja atingido
+                        print(f"mover_laser: {self.__pontuacao}")
                         if laser in self.lasers:
                             self.lasers.remove(laser)
 

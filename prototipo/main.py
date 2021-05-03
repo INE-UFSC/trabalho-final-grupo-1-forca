@@ -1,15 +1,16 @@
 import pygame
-import os
-import time
 import random
+from persistencia.rankingDAO import RankingDAO
 
 #importar 
-from laser import Laser
 from jogador import Jogador
 from inimigo import Inimigo
 from meteoro import Meteoro
 
 pygame.init()
+
+#conexao com rankingDAO
+ranking = RankingDAO()
 
 #definindo altura e largura da janela do meu jogo
 WIDTH, HEIGHT = 750, 750
@@ -28,17 +29,21 @@ pygame.display.set_caption("Jogo Teste")
 #carregando imagem do plano de funo
 PLANO_DE_FUNDO = pygame.transform.scale(pygame.image.load("../assets/plano_de_fundo.png"), (WIDTH, HEIGHT))
 
+# Novo evento criado para aumentar a pontuação conforme passa o tempo
+tempo = pygame.USEREVENT + 1
+pygame.time.set_timer(tempo, 5000)
+
 def colidir(objeto1, objeto2):
     offset_x = objeto2.x - objeto1.x
     offset_y = objeto2.y - objeto1.y
     
     return objeto1.mascara.overlap(objeto2.mascara, (offset_x, offset_y)) != None
 
-def main():
+def main(nome: str):
     run = True
     FPS = 60
     nivel = 0
-    vidas = 5
+    vidas = 1
     fonte = pygame.font.SysFont("comicsans", 50)
     fonte_fim_de_jogo = pygame.font.SysFont("comicsans", 60)
     clock = pygame.time.Clock()
@@ -55,13 +60,18 @@ def main():
 
     velocidade_laser = 7
     height_barra = 10
-    saude = 100
+    saude = 30
     
     movimento_jogador = 8
     jogador = Jogador(int(WIDTH/2 - JOGADOR.get_width()/2), int(HEIGHT-125), HEIGHT, saude)
+
     
     fim_de_jogo = False
     contador_fim_de_jogo = 0
+
+    def salvar_pontuacao():
+        ranking.add(nome, jogador.pontuacao)
+        print(ranking.get_all())
 
     def desenhar_janela():
         WIN.blit(PLANO_DE_FUNDO, (0, 0))
@@ -69,9 +79,11 @@ def main():
         #mostrando textos na tela
         label_vidas = fonte.render(f"Vidas: {vidas}", 1, (255, 255, 255)) #1 - suavização de serrilhado
         label_nivel = fonte.render(f"Nível: {nivel}", 1, (255, 255, 255))
+        label_pontuacao = fonte.render(f"{jogador.pontuacao}", 1, (255, 255, 255))
 
         WIN.blit(label_vidas, (10, 10))
         WIN.blit(label_nivel, (WIDTH - label_nivel.get_width() - 10, 10))
+        WIN.blit(label_pontuacao, ((WIDTH + label_pontuacao.get_width())/2, 10))
 
         for inimigo in inimigos:
             inimigo.desenhar(WIN)
@@ -110,6 +122,7 @@ def main():
             else:
                 continue
 
+
         #lógica do inimigo
         if len(inimigos) == 0:
             nivel += 1
@@ -130,7 +143,7 @@ def main():
                 jogador.saude -= 10
                 inimigos.remove(inimigo)
 
-            elif inimigo.y + inimigo.get_height()  > HEIGHT:
+            elif inimigo.y + inimigo.get_height() > HEIGHT:
                 inimigos.remove(inimigo)
         
         #lógica do meteoro
@@ -156,7 +169,7 @@ def main():
             elif meteoro.y + meteoro.get_height() > HEIGHT or meteoro.x + meteoro.get_width() > WIDTH:
                 meteoros.remove(meteoro)
 
-
+        # EVENTOS
         #vai passar por todos os eventos que ocorreram, 60 vezes por segundo
         for event in pygame.event.get():
             #se clicar no botão de fechar, o while se encerra, ou seja, o jogo fecha
@@ -164,6 +177,8 @@ def main():
                 quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 jogador.atirar()
+            if event.type == tempo:
+                jogador.inc_pontuacao(10)
 
         teclas = pygame.key.get_pressed() #retorna um dicioonário de todas as teclas e diz se estão pressionadas ou não
 
@@ -177,10 +192,13 @@ def main():
         if teclas[pygame.K_s] and jogador.y + movimento_jogador + jogador.get_height() + 2*height_barra < HEIGHT: #baixo
             jogador.y += movimento_jogador
         
-        
+        # Laser Jogador
         jogador.mover_lasers(-velocidade_laser, inimigos, meteoros)
 
+    salvar_pontuacao()
+
 def main_menu():
+    nome = input("Informe seu nome: ")
     fonte_titulo = pygame.font.SysFont("comicsans", 60)
     run = True
 
@@ -196,8 +214,9 @@ def main_menu():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                main()
+                main(nome)
     pygame.quit()
+
 
 
 main_menu()
