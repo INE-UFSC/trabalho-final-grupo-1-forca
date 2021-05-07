@@ -128,7 +128,7 @@ class Menu():
             #botão voltar
             botao(265, 386, 568, 608, self.menu_principal)
 
-            pygame.display.update()
+            pygame.display.flip()
             clock.tick(60)
 
     def diminuir_volume(self):
