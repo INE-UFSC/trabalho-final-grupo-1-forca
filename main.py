@@ -39,6 +39,7 @@ pygame.time.set_timer(tempo, 5000)
 branco = (255,255,255)
 preto = (0,0,0)
 
+
 def colidir(objeto1, objeto2):
     offset_x = objeto2.x - objeto1.x
     offset_y = objeto2.y - objeto1.y
@@ -46,7 +47,6 @@ def colidir(objeto1, objeto2):
     return objeto1.mascara.overlap(objeto2.mascara, (offset_x, offset_y)) != None
 
 class Main():
-
 
     def main(self):
         run = True
@@ -109,6 +109,8 @@ class Main():
                     WIDTH / 2 - fim_de_jogo_label.get_width() / 2, HEIGHT / 2 - fim_de_jogo_label.get_height() / 2))
 
             pygame.display.update()  # sempre que for desenhar, devemos atualizar a tela colocando a "nova imagem" por cima das outras que estavam desenhadas
+
+
 
         # quer dizer que o jogo vai executar a no máximo 60 quadros por segundo em qualquer máquina
         while run:
@@ -192,6 +194,12 @@ class Main():
                     jogador.atirar()
                 if event.type == tempo:
                     jogador.inc_pontuacao(10)
+
+                mouse = pygame.mouse.get_pos()
+                click = pygame.mouse.get_pressed()
+                if 624 > mouse[0] > 562 and 648 > mouse[1] > 543:
+                    if click[0] == 1:
+                        return True
 
             teclas = pygame.key.get_pressed()  # retorna um dicioonário de todas as teclas e diz se estão pressionadas ou não
 
