@@ -3,8 +3,8 @@ import os
 from personagem import Personagem
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-WH_JOGADOR = 80
-WH_INIMIGO = 50
+
+WH_INIMIGO = 75
 
 #carregando imagem dos aliens inimigos
 ALIEN_1 = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "inimigo_1.png")), (WH_INIMIGO, WH_INIMIGO))
