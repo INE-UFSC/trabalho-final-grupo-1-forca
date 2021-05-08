@@ -25,10 +25,13 @@ tela_fim = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "asse
 def botao(x, x2, y, y2, action=None):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
+    acabou = None
 
     if x2 > mouse[0] > x and y2 > mouse[1] > y:
         if click[0] == 1 and action != None:
-            action()
+            acabou = action()
+
+    return acabou
 
 def text_objects(text, font):
     textSurface = font.render(text, True, black)
@@ -79,8 +82,6 @@ class Menu():
             textRect.center = (338, 388)
             gameDisplay.blit(textSurf, textRect)
 
-            
-
             botao(256, 405, 580, 608, self.menu_tutorial)
 
             pygame.display.update()
@@ -95,7 +96,10 @@ class Menu():
 
             gameDisplay.blit(tela_tutorial, (0, 0))
 
-            botao(230, 436, 572, 606, self.comecar_jogo)
+            acabou = botao(230, 436, 572, 606, self.comecar_jogo)
+
+            if acabou:
+                self.tela_fim()
 
             pygame.display.update()
             clock.tick(60)
@@ -133,6 +137,23 @@ class Menu():
             pygame.display.flip()
             clock.tick(60)
 
+    def tela_fim(self):
+        while not self.__crashou:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.__crashou = False
+
+                print(event)
+
+            gameDisplay.blit(tela_fim, (0, 0))
+
+            botao(465, 634, 485, 642, self.menu_principal)
+
+            pygame.display.flip()
+            clock.tick(60)
+
+        pass
+
     def diminuir_volume(self):
         pass
 
@@ -141,7 +162,10 @@ class Menu():
 
     def comecar_jogo(self):
         jogo_comecado = Main()
-        jogo_comecado.main()
+        acabou = jogo_comecado.main()
+
+        if acabou:
+            self.tela_fim()
 
     def menu_sair(self):
         pygame.quit()

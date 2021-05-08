@@ -52,9 +52,9 @@ class Main():
         run = True
         FPS = 60
         nivel = 0
-        vidas = 5
-        fonte = pygame.font.SysFont("comicsans", 50)
-        fonte_fim_de_jogo = pygame.font.SysFont("comicsans", 60)
+        vidas = 1
+        fonte = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.ttf"), 50)
+        fonte_fim_de_jogo = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.ttf"), 60)
         clock = pygame.time.Clock()
         parado = True
 
@@ -88,12 +88,12 @@ class Main():
 
             # mostrando textos na tela
             label_vidas = fonte.render(f"Vidas: {vidas}", True, preto)  # 1 - suavização de serrilhado
-            label_nivel = fonte.render(f"Nível: {nivel}", True, preto)
+            label_nivel = fonte.render(f"Nivel: {nivel}", True, preto)
             label_pontuacao = fonte.render(f"{jogador.pontuacao}", True, preto)
 
             WIN.blit(label_vidas, (10, 10))
             WIN.blit(label_nivel, (WIDTH - label_nivel.get_width() - 10, 10))
-            WIN.blit(label_pontuacao, ((WIDTH + label_pontuacao.get_width()) / 2, 10))
+            WIN.blit(label_pontuacao, (10, 595))
 
             for inimigo in inimigos:
                 inimigo.desenhar(WIN)
@@ -104,9 +104,9 @@ class Main():
             jogador.desenhar(WIN, height_barra, parado)
 
             if fim_de_jogo:
-                fim_de_jogo_label = fonte_fim_de_jogo.render("VOCÊ PERDEU!!!", True, preto)
+                fim_de_jogo_label = fonte_fim_de_jogo.render("Aguarde", True, preto)
                 WIN.blit(fim_de_jogo_label, (
-                WIDTH / 2 - fim_de_jogo_label.get_width() / 2, HEIGHT / 2 - fim_de_jogo_label.get_height() / 2))
+                    WIDTH / 2 - fim_de_jogo_label.get_width() / 2, HEIGHT / 2 - fim_de_jogo_label.get_height() / 2))
 
             pygame.display.update()  # sempre que for desenhar, devemos atualizar a tela colocando a "nova imagem" por cima das outras que estavam desenhadas
 
@@ -129,7 +129,7 @@ class Main():
 
             if fim_de_jogo:
                 if contador_fim_de_jogo > FPS * 3:
-                    run = False
+                    return True
                 else:
                     continue
 
@@ -216,26 +216,3 @@ class Main():
             jogador.mover_lasers(-velocidade_laser, inimigos, meteoros)
 
         salvar_pontuacao()
-
-'''def main_menu():
-    fonte_titulo = pygame.font.SysFont("comicsans", 60)
-    run = True
-
-    while run:
-        WIN.blit(PLANO_DE_FUNDO, (0, 0))
-        
-        label_titulo = fonte_titulo.render("Pressione o mouse para começar...", 1, preto)
-        WIN.blit(label_titulo, (WIDTH/2 - label_titulo.get_width()/2, HEIGHT/2 - label_titulo.get_height()/2))
-
-        pygame.display.update()
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                main()
-    pygame.quit()
-
-
-
-main_menu()'''
