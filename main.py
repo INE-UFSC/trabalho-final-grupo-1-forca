@@ -56,6 +56,7 @@ class Main():
         fonte = pygame.font.SysFont("comicsans", 50)
         fonte_fim_de_jogo = pygame.font.SysFont("comicsans", 60)
         clock = pygame.time.Clock()
+        parado = True
 
         # variáveis pro inimigo
         inimigos = []
@@ -100,7 +101,7 @@ class Main():
             for meteoro in meteoros:
                 meteoro.desenhar(WIN)
 
-            jogador.desenhar(WIN, height_barra)
+            jogador.desenhar(WIN, height_barra, parado)
 
             if fim_de_jogo:
                 fim_de_jogo_label = fonte_fim_de_jogo.render("VOCÊ PERDEU!!!", True, preto)
@@ -197,13 +198,19 @@ class Main():
             # movimentos do jogador de acordo com a tecla pressionada
             if teclas[pygame.K_a] and jogador.x - movimento_jogador > 0:  # esquerda
                 jogador.x -= movimento_jogador
-            if teclas[pygame.K_d] and jogador.x + movimento_jogador + jogador.get_width() < WIDTH:  # direita
+                parado = False
+            elif teclas[pygame.K_d] and jogador.x + movimento_jogador + jogador.get_width() < WIDTH:  # direita
                 jogador.x += movimento_jogador
-            if teclas[pygame.K_w] and jogador.y - movimento_jogador > 0:  # cima
+                parado = False
+            elif teclas[pygame.K_w] and jogador.y - movimento_jogador > 0:  # cima
                 jogador.y -= movimento_jogador
-            if teclas[
+                parado = False
+            elif teclas[
                 pygame.K_s] and jogador.y + movimento_jogador + jogador.get_height() + 2 * height_barra < HEIGHT:  # baixo
                 jogador.y += movimento_jogador
+                parado = False
+            else:
+                parado = True
 
             # Laser Jogador
             jogador.mover_lasers(-velocidade_laser, inimigos, meteoros)

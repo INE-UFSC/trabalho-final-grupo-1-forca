@@ -9,11 +9,13 @@ LASER_JOGADOR = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_4.png"
 
 #carregando imagem do jogador
 JOGADOR = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "jogador_se_movendo.png")), (WH_JOGADOR, WH_JOGADOR))
+JOGADOR_PARADO = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "jogador_parado.png")), (WH_JOGADOR, WH_JOGADOR))
 
 class Jogador(Personagem):
     def __init__(self, x: int, y: int, height: int, saude = 100):
         super().__init__(x, y, height, saude)
         self.personagem_img = JOGADOR
+        self.personagem_parado_img = JOGADOR_PARADO
         self.laser_img = LASER_JOGADOR
         self.__mascara = pygame.mask.from_surface(self.personagem_img) #essa mascara pega o personagem_img e diz quais pixels ele está e nãoe stá ocupando, o que é necessário para a ser detectado a colisão
         self.__max_saude = saude
@@ -63,8 +65,15 @@ class Jogador(Personagem):
                         self.lasers.remove(laser)
                         
     
-    def desenhar(self, window, height_barra):
-        super().desenhar(window)
+    def desenhar(self, window, height_barra, parado):
+        if not parado:
+            super().desenhar(window)
+        else:
+            window.blit(self.personagem_parado_img, (self.x, self.y))
+
+            for laser in self.lasers:
+                laser.desenhar(window)
+
         self.barra_de_saude(window, height_barra)
 
     def barra_de_saude(self, window, height_barra):
