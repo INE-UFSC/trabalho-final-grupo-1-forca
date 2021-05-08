@@ -13,7 +13,7 @@ pygame.init()
 #ranking = RankingDAO()
 
 #definindo altura e largura da janela do meu jogo
-WIDTH, HEIGHT = 600, 600
+WIDTH, HEIGHT = 650, 650
 WH_JOGADOR = 80
 WH_INIMIGO = 50
 
@@ -34,8 +34,8 @@ tempo = pygame.USEREVENT + 1
 pygame.time.set_timer(tempo, 5000)
 
 #cores
-branco = (255,255,255)
-preto = (0,0,0)
+branco = (255, 255, 255)
+preto = (0, 0, 0)
 
 def colidir(objeto1, objeto2):
     offset_x = objeto2.x - objeto1.x
@@ -176,7 +176,7 @@ class Main():
                     jogador.saude -= 15
                     meteoros.remove(meteoro)
 
-                elif meteoro.y + meteoro.get_height() > HEIGHT or meteoro.x + meteoro.get_width() > WIDTH:
+                elif meteoro.y > HEIGHT or meteoro.x > WIDTH:
                     meteoros.remove(meteoro)
 
             # EVENTOS

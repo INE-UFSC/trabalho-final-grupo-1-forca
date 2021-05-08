@@ -1,7 +1,7 @@
 import pygame
 from personagem import Personagem
 
-WH_INIMIGO = 50
+WH_INIMIGO = 75
 
 #carregando imagem dos aliens inimigos
 ALIEN_1 = pygame.transform.scale(pygame.image.load("../assets/inimigo_1.png"), (WH_INIMIGO, WH_INIMIGO))
