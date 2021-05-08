@@ -68,15 +68,15 @@ class Menu():
                         text = ''
                     elif event.key == pygame.K_BACKSPACE:
                         text = text[:-1]
-                    else:
+                    elif len(text) <= 10:
                         text += event.unicode
                         
 
             gameDisplay.blit(tela_nome, (0, 0))
             
-            font = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.ttf"), 100)
+            font = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.ttf"), 75)
             textSurf, textRect = text_objects(text, font)
-            textRect.center = (348, 388)
+            textRect.center = (338, 388)
             gameDisplay.blit(textSurf, textRect)
 
             
