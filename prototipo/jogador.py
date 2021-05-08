@@ -6,7 +6,7 @@ WH_JOGADOR = 80
 LASER_JOGADOR = pygame.image.load("../assets/laser_4.png")
 
 #carregando imagem do jogador
-JOGADOR = pygame.transform.scale(pygame.image.load("../assets/jogador.png"), (WH_JOGADOR, WH_JOGADOR))
+JOGADOR = pygame.transform.scale(pygame.image.load("../assets/jogador_se_movendo.png"), (WH_JOGADOR, WH_JOGADOR))
 
 class Jogador(Personagem):
     def __init__(self, x: int, y: int, height: int, saude = 100):

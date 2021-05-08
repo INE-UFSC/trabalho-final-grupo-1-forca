@@ -2,12 +2,12 @@ import pygame
 from objeto import Objeto
 
 #carregando imagem dos meteoros
-METEORO = pygame.image.load("../assets/meteoro.png")
+meteoro = pygame.transform.scale(pygame.image.load("../assets/meteoro_fogo.png"), (108, 90))
 
 class Meteoro(Objeto):
     def __init__(self, x: int, y: int, height: int, width: int):
         super().__init__(x, y, height, width)
-        self.objeto_img = METEORO
+        self.objeto_img = meteoro
         self.__mascara = pygame.mask.from_surface(self.objeto_img) #essa mascara pega o personagem_img e diz quais pixels ele está e nãoe stá ocupando, o que é necessário para a ser detectado a colisão
 
     @property

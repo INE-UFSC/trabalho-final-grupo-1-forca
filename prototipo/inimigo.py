@@ -4,9 +4,9 @@ from personagem import Personagem
 WH_INIMIGO = 50
 
 #carregando imagem dos aliens inimigos
-ALIEN_1 = pygame.transform.scale(pygame.image.load("../assets/alien_1.png"), (WH_INIMIGO, WH_INIMIGO))
-ALIEN_2 = pygame.transform.scale(pygame.image.load("../assets/alien_2.png"), (WH_INIMIGO, WH_INIMIGO))
-ALIEN_3 = pygame.transform.scale(pygame.image.load("../assets/alien_3.png"), (WH_INIMIGO, WH_INIMIGO))
+ALIEN_1 = pygame.transform.scale(pygame.image.load("../assets/inimigo_1.png"), (WH_INIMIGO, WH_INIMIGO))
+ALIEN_2 = pygame.transform.scale(pygame.image.load("../assets/inimigo_2.png"), (WH_INIMIGO, WH_INIMIGO))
+ALIEN_3 = pygame.transform.scale(pygame.image.load("../assets/inimigo_3.png"), (WH_INIMIGO, WH_INIMIGO))
 
 LASER_1 = pygame.image.load("../assets/laser_1.png")
 LASER_2 = pygame.image.load("../assets/laser_2.png")

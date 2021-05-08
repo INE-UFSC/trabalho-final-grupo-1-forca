@@ -1,4 +1,5 @@
 import pygame
+from main import Main
 
 pygame.init()
 largura = 650
@@ -138,12 +139,12 @@ class Menu():
         pass
 
     def comecar_jogo(self):
-        return True
+        jogo_comecado = Main()
+        jogo_comecado.main()
 
     def menu_sair(self):
         pygame.quit()
         quit()
 
-
-lalaal = Menu()
-lalaal.menu_principal()
+#menu = Menu()
+#menu.menu_principal()
