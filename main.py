@@ -1,5 +1,6 @@
 import pygame
 import random
+import os
 #from persistencia.rankingDAO import RankingDAO
 
 #importar
@@ -13,12 +14,13 @@ pygame.init()
 #ranking = RankingDAO()
 
 #definindo altura e largura da janela do meu jogo
-WIDTH, HEIGHT = 650, 650
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+WIDTH, HEIGHT = 600, 600
 WH_JOGADOR = 80
 WH_INIMIGO = 50
 
 #carregando imagem do jogador
-JOGADOR = pygame.transform.scale(pygame.image.load("../assets/jogador_se_movendo.png"), (WH_JOGADOR, WH_JOGADOR))
+JOGADOR = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "jogador_se_movendo.png")), (WH_JOGADOR, WH_JOGADOR))
 
 #definindo que minha janela tera a largura e altura especificada
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -27,15 +29,15 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Jogo Teste")
 
 #carregando imagem do plano de funo
-PLANO_DE_FUNDO = pygame.transform.scale(pygame.image.load("../assets/tela_jogo_princial.png"), (WIDTH, HEIGHT))
+PLANO_DE_FUNDO = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_jogo_princial.png")), (WIDTH, HEIGHT))
 
 # Novo evento criado para aumentar a pontuação conforme passa o tempo
 tempo = pygame.USEREVENT + 1
 pygame.time.set_timer(tempo, 5000)
 
 #cores
-branco = (255, 255, 255)
-preto = (0, 0, 0)
+branco = (255,255,255)
+preto = (0,0,0)
 
 def colidir(objeto1, objeto2):
     offset_x = objeto2.x - objeto1.x
@@ -176,7 +178,7 @@ class Main():
                     jogador.saude -= 15
                     meteoros.remove(meteoro)
 
-                elif meteoro.y > HEIGHT or meteoro.x > WIDTH:
+                elif meteoro.y + meteoro.get_height() > HEIGHT or meteoro.x + meteoro.get_width() > WIDTH:
                     meteoros.remove(meteoro)
 
             # EVENTOS

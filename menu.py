@@ -1,7 +1,9 @@
 import pygame
+import os
 from main import Main
 
 pygame.init()
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 largura = 650
 altura = 650
 
@@ -11,13 +13,13 @@ clock = pygame.time.Clock()
 
 black = (0, 0, 0)
 
-tela_menu_principal = pygame.transform.scale(pygame.image.load("../assets/tela_menu_principal.jpg"), (largura, altura))
-tela_nome = pygame.transform.scale(pygame.image.load("../assets/tela_nome.png"), (largura, altura))
-tela_tutorial = pygame.transform.scale(pygame.image.load("../assets/tela_tutorial.png"), (largura, altura))
-tela_volume = pygame.transform.scale(pygame.image.load("../assets/tela_volume.png"), (largura, altura))
-tela_ranking = pygame.transform.scale(pygame.image.load("../assets/tela_ranking.png"), (largura, altura))
-tela_jogo_principal = pygame.transform.scale(pygame.image.load("../assets/tela_jogo_princial.png"), (largura, altura))
-tela_fim = pygame.transform.scale(pygame.image.load("../assets/tela_fim.png"), (largura, altura))
+tela_menu_principal = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_menu_principal.jpg")), (largura, altura))
+tela_nome = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_nome.png")), (largura, altura))
+tela_tutorial = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_tutorial.png")), (largura, altura))
+tela_volume = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_volume.png")), (largura, altura))
+tela_ranking = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_ranking.png")), (largura, altura))
+tela_jogo_principal = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_jogo_princial.png")), (largura, altura))
+tela_fim = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_fim.png")), (largura, altura))
 
 
 def botao(x, x2, y, y2, action=None):
@@ -39,7 +41,6 @@ class Menu():
         self.__crashou = False
 
     def menu_principal(self):
-        
         while not self.__crashou:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -73,7 +74,7 @@ class Menu():
 
             gameDisplay.blit(tela_nome, (0, 0))
             
-            font = pygame.font.Font("levycrayola.ttf", 100)
+            font = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.ttf"), 100)
             textSurf, textRect = text_objects(text, font)
             textRect.center = (348, 388)
             gameDisplay.blit(textSurf, textRect)

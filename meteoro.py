@@ -1,8 +1,11 @@
 import pygame
+import os
 from objeto import Objeto
 
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+
 #carregando imagem dos meteoros
-meteoro = pygame.transform.scale(pygame.image.load("../assets/meteoro_fogo.png"), (108, 90))
+meteoro = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "meteoro_fogo.png")), (108, 90))
 
 class Meteoro(Objeto):
     def __init__(self, x: int, y: int, height: int, width: int):

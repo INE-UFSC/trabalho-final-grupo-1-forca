@@ -1,10 +1,13 @@
 import pygame
+import os
+
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 #carregando imagem dos lasers
-LASER_1 = pygame.image.load("../assets/laser_1.png")
-LASER_2 = pygame.image.load("../assets/laser_2.png")
-LASER_3 = pygame.image.load("../assets/laser_3.png")
-LASER_4 = pygame.image.load("../assets/laser_4.png")
+LASER_1 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_1.png"))
+LASER_2 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_1.png"))
+LASER_3 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_1.png"))
+LASER_4 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_1.png"))
 
 def colidir(objeto1, objeto2):
     offset_x = objeto2.x - objeto1.x
