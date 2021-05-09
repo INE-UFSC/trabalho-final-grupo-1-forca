@@ -38,6 +38,10 @@ def text_objects(text, font):
     textSurface = font.render(text, True, black)
     return textSurface, textSurface.get_rect()
 
+def text_objects_blue(text, font):
+    textSurface = font.render(text, True, 'deepskyblue2')
+    return textSurface, textSurface.get_rect()
+
 class Menu():
     def __init__(self):
         self.__largura = largura
@@ -116,6 +120,24 @@ class Menu():
                     self.__crashou = False
 
             gameDisplay.blit(tela_ranking, (0, 0))
+
+            font = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.TTF"), 60)
+
+            if len(self.__pontos_jogadores) == 0:
+                textSurf, textRect = text_objects_blue("Comece o Jogo! =)", font)
+                textRect.center = (338, 345)
+                gameDisplay.blit(textSurf, textRect)
+
+            else:
+                nome_y = 145
+                for i in range(len(self.__pontos_jogadores)):
+                    if i == 5:
+                        break
+                    texto = f"{self.__pontos_jogadores[i][0]:<6} {self.__pontos_jogadores[i][1]}".title()
+                    textSurf, textRect = text_objects_blue(texto, font)
+                    textRect.topleft = (100, nome_y)
+                    gameDisplay.blit(textSurf, textRect)
+                    nome_y += 80
 
             botao(258, 381, 571, 607, self.menu_principal)
 
