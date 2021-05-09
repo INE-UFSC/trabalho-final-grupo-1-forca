@@ -10,8 +10,8 @@ LASER_3 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_1.png"))
 LASER_4 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_1.png"))
 
 def colidir(objeto1, objeto2):
-    offset_x = objeto2.x - objeto1.x
-    offset_y = objeto2.y - objeto1.y
+    offset_x = int(objeto2.x - objeto1.x)
+    offset_y = int(objeto2.y - objeto1.y)
     
     return objeto1.mascara.overlap(objeto2.mascara, (offset_x, offset_y)) != None
     

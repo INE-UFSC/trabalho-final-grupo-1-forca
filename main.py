@@ -1,7 +1,6 @@
 import pygame
 import random
 import os
-#from persistencia.rankingDAO import RankingDAO
 
 #importar
 from jogador import Jogador
@@ -9,9 +8,6 @@ from inimigo import Inimigo
 from meteoro import Meteoro
 
 pygame.init()
-
-#conexao com rankingDAO
-#ranking = RankingDAO()
 
 #definindo altura e largura da janela do meu jogo
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -41,8 +37,8 @@ preto = (0,0,0)
 
 
 def colidir(objeto1, objeto2):
-    offset_x = objeto2.x - objeto1.x
-    offset_y = objeto2.y - objeto1.y
+    offset_x = int(objeto2.x - objeto1.x)
+    offset_y = int(objeto2.y - objeto1.y)
 
     return objeto1.mascara.overlap(objeto2.mascara, (offset_x, offset_y)) != None
 
@@ -51,12 +47,15 @@ class Main():
     def main(self):
         run = True
         FPS = 60
-        nivel = 0
+        nivel = 1
         vidas = 1
-        fonte = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.ttf"), 50)
-        fonte_fim_de_jogo = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.ttf"), 60)
+        fonte = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.TTF"), 50)
+        fonte_fim_de_jogo = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.TTF"), 60)
         clock = pygame.time.Clock()
         parado = True
+
+        # Pontuação para o próximo nível
+        pontuacao_limite = 300
 
         # variáveis pro inimigo
         inimigos = []
@@ -65,7 +64,7 @@ class Main():
 
         # variáveis pro meteoro
         meteoros = []
-        onda_de_meteoros = 2
+        #onda_de_meteoros = 2
         velocidade_meteoro = 1
 
         velocidade_laser = 7
@@ -77,11 +76,6 @@ class Main():
 
         fim_de_jogo = False
         contador_fim_de_jogo = 0
-
-        def salvar_pontuacao():
-            #ranking.add("nome", jogador.pontuacao)
-            #print(ranking.get_all())
-            pass
 
         def desenhar_janela():
             WIN.blit(PLANO_DE_FUNDO, (0, 0))
@@ -110,8 +104,6 @@ class Main():
 
             pygame.display.update()  # sempre que for desenhar, devemos atualizar a tela colocando a "nova imagem" por cima das outras que estavam desenhadas
 
-
-
         # quer dizer que o jogo vai executar a no máximo 60 quadros por segundo em qualquer máquina
         while run:
             clock.tick(FPS)
@@ -129,15 +121,44 @@ class Main():
                 fim_de_jogo = True
                 contador_fim_de_jogo += 1
 
+            # A pontuacao é retornada quando o jogador perde
             if fim_de_jogo:
                 if contador_fim_de_jogo > FPS * 3:
-                    return True
+                    return jogador.pontuacao
                 else:
                     continue
 
+            # Subida de nivel, Velocidade do Inimigo, do Laser e do Meteoro
+            if jogador.pontuacao >= pontuacao_limite:
+                if nivel < 3:
+                    velocidade_meteoro += 1
+                    pontuacao_limite += pontuacao_limite
+                    velocidade_inimigo += 0.5
+                    velocidade_laser += 0.5
+                elif nivel == 3:
+                    pontuacao_limite = 1800
+                    velocidade_inimigo += 0.5
+                    velocidade_laser += 0.5
+                    velocidade_meteoro += 1
+                elif nivel == 4:
+                    pontuacao_limite = 3000
+                    velocidade_inimigo += 0.5
+                    velocidade_laser += 0.5
+                elif nivel > 4:
+                    pontuacao_limite += pontuacao_limite * 0.5
+                    velocidade_inimigo += 1
+                    velocidade_laser += 1
+                    velocidade_meteoro += 1
+                elif nivel > 7:
+                    pontuacao_limite += pontuacao_limite * 0.3
+                    velocidade_inimigo += 1
+                    velocidade_laser += 1
+                    velocidade_meteoro += 1
+                nivel += 1
+                print("vel inimigo:", velocidade_inimigo)
+
             # lógica do inimigo
             if len(inimigos) == 0:
-                nivel += 1
                 onda_de_inimigos += 5
 
                 for i in range(onda_de_inimigos):
@@ -159,20 +180,29 @@ class Main():
                 elif inimigo.y + inimigo.get_height() > HEIGHT:
                     inimigos.remove(inimigo)
 
-            # lógica do meteoro
+            # lógica de criação, remoção e movimento dos meteoros
             if len(meteoros) == 0:
-                onda_de_meteoros += 2
-                onde = random.randrange(1, 3)
-
-                for i in range(onda_de_meteoros):
-                    if onde == 2:
-                        meteoro = Meteoro(random.randrange(50, WIDTH - 128),
-                                          random.randrange(-10000 * (nivel / 5), -128), HEIGHT, WIDTH)
-                    else:
-                        meteoro = Meteoro(random.randrange(-10000 * (nivel / 5), -128),
-                                          random.randrange(0, WIDTH - 128), HEIGHT, WIDTH)
-
+                meteoro = Meteoro(-110, random.randrange(0, 400), HEIGHT, WIDTH)
+                meteoros.append(meteoro)
+                if nivel > 1:
+                    meteoro2 = Meteoro(-510, random.randrange(-500, 400), HEIGHT, WIDTH)
+                    meteoros.append(meteoro2)
+                if nivel > 2:
+                    meteoro3 = Meteoro(-930, random.randrange(-900, -100), HEIGHT, WIDTH)
+                    meteoros.append(meteoro3)
+                if nivel > 3:
+                    meteoro4 = Meteoro(-1330, random.randrange(-1100, -400), HEIGHT, WIDTH)
+                    meteoros.append(meteoro4)
+                    meteoro5 = Meteoro(-1130, random.randrange(-800, -100), HEIGHT, WIDTH)
+                    meteoros.append(meteoro5)
+                if nivel > 4:
+                    meteoro6 = Meteoro(-1730, random.randrange(-1500, -700), HEIGHT, WIDTH)
+                    meteoros.append(meteoro6)
+                    meteoro7 = Meteoro(-730, random.randrange(-700, 0), HEIGHT, WIDTH)
+                    meteoros.append(meteoro7)
                     meteoros.append(meteoro)
+                #print("m", len(meteoros))
+                # print("nivel", nivel,"vel", velocidade_meteoro)
 
             for meteoro in meteoros[:]:
                 meteoro.movimentar(velocidade_meteoro)
@@ -222,5 +252,3 @@ class Main():
 
             # Laser Jogador
             jogador.mover_lasers(-velocidade_laser, inimigos, meteoros)
-
-        salvar_pontuacao()

@@ -1,4 +1,4 @@
-from persistencia.DAO import DAO
+from DAO import DAO
 
 
 class RankingDAO(DAO):

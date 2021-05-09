@@ -1,6 +1,7 @@
 import pygame
 import os
 from main import Main
+from rankingDAO import RankingDAO
 
 pygame.init()
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -42,6 +43,9 @@ class Menu():
         self.__largura = largura
         self.__altura = altura
         self.__crashou = False
+        self.__ranking = RankingDAO()
+        self.__nomeAtual = ''
+        self.__pontos_jogadores = []
 
     def menu_principal(self):
         while not self.__crashou:
@@ -67,17 +71,17 @@ class Menu():
                     self.__crashou = False
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
-                        print(text)
+                        print(self.__nomeAtual)
                         text = ''
                     elif event.key == pygame.K_BACKSPACE:
                         text = text[:-1]
                     elif len(text) <= 10:
                         text += event.unicode
-                        
+                        self.__nomeAtual = text
 
             gameDisplay.blit(tela_nome, (0, 0))
             
-            font = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.ttf"), 75)
+            font = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.TTF"), 75)
             textSurf, textRect = text_objects(text, font)
             textRect.center = (338, 388)
             gameDisplay.blit(textSurf, textRect)
@@ -105,7 +109,7 @@ class Menu():
             clock.tick(60)
 
     def menu_ranking(self):
-
+        self.calcular_ranking()
         while not self.__crashou:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -154,17 +158,29 @@ class Menu():
 
         pass
 
+    def calcular_ranking(self):
+        lista_serializada = self.__ranking.get_all()
+        for i in lista_serializada:
+            self.__pontos_jogadores.append((i[1][1], i[1][0]))
+        self.__pontos_jogadores.sort(reverse=True)
+        print(self.__pontos_jogadores)
+
     def diminuir_volume(self):
         pass
 
     def aumentar_volume(self):
         pass
 
+    def salvar_pontuacao(self, pontuacao):
+        self.__ranking.add(self.__nomeAtual, pontuacao)
+        print(self.__ranking.get_all())
+
     def comecar_jogo(self):
         jogo_comecado = Main()
-        acabou = jogo_comecado.main()
+        pontuacao = jogo_comecado.main()  # início do jogo
 
-        if acabou:
+        if pontuacao:
+            self.salvar_pontuacao(pontuacao)
             self.tela_fim()
 
     def menu_sair(self):
