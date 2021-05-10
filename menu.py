@@ -136,8 +136,9 @@ class Menu():
             else:
                 nome_y = 145
                 for i in range(len(self.__pontos_jogadores)):
-                    if i == 5:
-                        self.__lista_ranking.remove(self.__pontos_jogadores[i])
+                    if i > 4:
+                        self.__pontos_jogadores = self.__pontos_jogadores[:5]
+                        break
 
                     texto = f"{self.__pontos_jogadores[i][0]:<6} {self.__pontos_jogadores[i][1]}".title()
                     textSurf, textRect = text_objects_blue(texto, font)
