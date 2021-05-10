@@ -48,14 +48,14 @@ class Main():
         run = True
         FPS = 60
         nivel = 1
-        vidas = 1
+        vidas = 5
         fonte = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.TTF"), 50)
         fonte_fim_de_jogo = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.TTF"), 60)
         clock = pygame.time.Clock()
         parado = True
 
         # Pontuação para o próximo nível
-        pontuacao_limite = 300
+        pontuacao_limite = 800
 
         # variáveis pro inimigo
         inimigos = []
@@ -131,38 +131,36 @@ class Main():
             # Subida de nivel, Velocidade do Inimigo, do Laser e do Meteoro
             if jogador.pontuacao >= pontuacao_limite:
                 if nivel < 3:
-                    velocidade_meteoro += 1
-                    pontuacao_limite += pontuacao_limite
+                    if nivel == 1:
+                        velocidade_meteoro += 1
+                        pontuacao_limite = 1800
+                    if nivel == 2:
+                        pontuacao_limite = 3000
                     velocidade_inimigo += 0.5
                     velocidade_laser += 0.5
                 elif nivel == 3:
-                    pontuacao_limite = 1800
+                    pontuacao_limite = 4000
                     velocidade_inimigo += 0.5
                     velocidade_laser += 0.5
                     velocidade_meteoro += 1
                 elif nivel == 4:
-                    pontuacao_limite = 3000
+                    pontuacao_limite = 5000
                     velocidade_inimigo += 0.5
                     velocidade_laser += 0.5
                 elif nivel > 4:
-                    pontuacao_limite += pontuacao_limite * 0.5
-                    velocidade_inimigo += 1
-                    velocidade_laser += 1
-                    velocidade_meteoro += 1
-                elif nivel > 7:
                     pontuacao_limite += pontuacao_limite * 0.3
                     velocidade_inimigo += 1
                     velocidade_laser += 1
                     velocidade_meteoro += 1
                 nivel += 1
-                print("vel inimigo:", velocidade_inimigo)
+                #print("vel inimigo:", velocidade_inimigo)
 
             # lógica do inimigo
             if len(inimigos) == 0:
                 onda_de_inimigos += 5
 
                 for i in range(onda_de_inimigos):
-                    inimigo = Inimigo(random.randrange(50, WIDTH - 128), random.randrange(-10000 * (nivel / 5), -128),
+                    inimigo = Inimigo(random.randrange(50, WIDTH - 128), random.randrange(-8000 * (nivel / 5), -128),
                                       str(random.randrange(1, 4)), HEIGHT, saude)  # ver depois sobre o -1500
                     inimigos.append(inimigo)
 
@@ -185,22 +183,23 @@ class Main():
                 meteoro = Meteoro(-110, random.randrange(0, 400), HEIGHT, WIDTH)
                 meteoros.append(meteoro)
                 if nivel > 1:
-                    meteoro2 = Meteoro(-510, random.randrange(-500, 400), HEIGHT, WIDTH)
+                    meteoro2 = Meteoro(-510, random.randrange(-300, 250), HEIGHT, WIDTH)
                     meteoros.append(meteoro2)
                 if nivel > 2:
-                    meteoro3 = Meteoro(-930, random.randrange(-900, -100), HEIGHT, WIDTH)
+                    meteoro3 = Meteoro(-910, random.randrange(-600, -50), HEIGHT, WIDTH)
                     meteoros.append(meteoro3)
                 if nivel > 3:
-                    meteoro4 = Meteoro(-1330, random.randrange(-1100, -400), HEIGHT, WIDTH)
+                    meteoro4 = Meteoro(-1310, random.randrange(-1100, -400), HEIGHT, WIDTH)
                     meteoros.append(meteoro4)
-                    meteoro5 = Meteoro(-1130, random.randrange(-800, -100), HEIGHT, WIDTH)
-                    meteoros.append(meteoro5)
                 if nivel > 4:
-                    meteoro6 = Meteoro(-1730, random.randrange(-1500, -700), HEIGHT, WIDTH)
+                    meteoro6 = Meteoro(-1710, random.randrange(-1150, -550), HEIGHT, WIDTH)
                     meteoros.append(meteoro6)
-                    meteoro7 = Meteoro(-730, random.randrange(-700, 0), HEIGHT, WIDTH)
+                if nivel > 5:
+                    meteoro5 = Meteoro(-1110, random.randrange(-700, -150), HEIGHT, WIDTH)
+                    meteoros.append(meteoro5)
+                if nivel > 6:
+                    meteoro7 = Meteoro(-710, random.randrange(-600, 0), HEIGHT, WIDTH)
                     meteoros.append(meteoro7)
-                    meteoros.append(meteoro)
                 #print("m", len(meteoros))
                 # print("nivel", nivel,"vel", velocidade_meteoro)
 
@@ -229,7 +228,7 @@ class Main():
                 click = pygame.mouse.get_pressed()
                 if 624 > mouse[0] > 562 and 648 > mouse[1] > 543:
                     if click[0] == 1:
-                        return True
+                        return jogador.pontuacao
 
             teclas = pygame.key.get_pressed()  # retorna um dicioonário de todas as teclas e diz se estão pressionadas ou não
 

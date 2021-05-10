@@ -52,10 +52,12 @@ class Menu():
         self.__pontos_jogadores = []
 
     def menu_principal(self):
+        pygame.event.wait()
         while not self.__crashou:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.__crashou = False
+                    self.menu_sair()
 
             gameDisplay.blit(tela_menu_principal, (0, 0))
 
@@ -73,9 +75,10 @@ class Menu():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.__crashou = False
+                    self.menu_sair()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
-                        print(self.__nomeAtual)
+                        #print(self.__nomeAtual)
                         text = ''
                     elif event.key == pygame.K_BACKSPACE:
                         text = text[:-1]
@@ -96,11 +99,12 @@ class Menu():
             clock.tick(60)
 
     def menu_tutorial(self):
-
+        pygame.event.wait()
         while not self.__crashou:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.__crashou = False
+                    self.menu_sair()
 
             gameDisplay.blit(tela_tutorial, (0, 0))
 
@@ -118,6 +122,7 @@ class Menu():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.__crashou = False
+                    self.menu_sair()
 
             gameDisplay.blit(tela_ranking, (0, 0))
 
@@ -150,6 +155,7 @@ class Menu():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.__crashou = False
+                    self.menu_sair()
 
             gameDisplay.blit(tela_volume, (0, 0))
 
@@ -168,8 +174,9 @@ class Menu():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.__crashou = False
+                    self.menu_sair()
 
-                print(event)
+                #print(event)
 
             gameDisplay.blit(tela_fim, (0, 0))
 
@@ -185,7 +192,7 @@ class Menu():
         for i in lista_serializada:
             self.__pontos_jogadores.append((i[1][1], i[1][0]))
         self.__pontos_jogadores.sort(reverse=True)
-        print(self.__pontos_jogadores)
+        #print(self.__pontos_jogadores)
 
     def diminuir_volume(self):
         pass
@@ -195,7 +202,7 @@ class Menu():
 
     def salvar_pontuacao(self, pontuacao):
         self.__ranking.add(self.__nomeAtual, pontuacao)
-        print(self.__ranking.get_all())
+        #print(self.__ranking.get_all())
 
     def comecar_jogo(self):
         jogo_comecado = Main()

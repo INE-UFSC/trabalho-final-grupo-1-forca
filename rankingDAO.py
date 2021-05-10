@@ -10,7 +10,7 @@ class RankingDAO(DAO):
         valor_ranking = (nome, pontuacao)
         super().add(self.id, valor_ranking)
         self.id += 1
-        print(self.id)
+        #print(self.id)
 
     def get_all(self):
         return super().get_all()
