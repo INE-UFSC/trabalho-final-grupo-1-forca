@@ -121,7 +121,7 @@ class Main():
             if jogador.saude <= 0:
                 if vidas >= 1:
                     jogador.saude = saude
-                    vidas -= 5
+                    vidas -= 1
                 else:
                     fim_de_jogo = True
                     contador_fim_de_jogo += 1
@@ -235,7 +235,6 @@ class Main():
                     jogador.inc_pontuacao(10)
 
                 mouse = pygame.mouse.get_pos()
-                print(mouse)
                 click = pygame.mouse.get_pressed()
                 if 632 > mouse[0] > 593 and 629 > mouse[1] > 569:
                     if click[0] == 1:
