@@ -137,7 +137,8 @@ class Menu():
                 nome_y = 145
                 for i in range(len(self.__pontos_jogadores)):
                     if i == 5:
-                        break
+                        self.__lista_ranking.remove(self.__pontos_jogadores[i])
+
                     texto = f"{self.__pontos_jogadores[i][0]:<6} {self.__pontos_jogadores[i][1]}".title()
                     textSurf, textRect = text_objects_blue(texto, font)
                     textRect.topleft = (100, nome_y)
@@ -190,7 +191,8 @@ class Menu():
     def calcular_ranking(self):
         lista_serializada = self.__ranking.get_all()
         for i in lista_serializada:
-            self.__pontos_jogadores.append((i[1][1], i[1][0]))
+            if (i[1][1],i[1][0]) not in self.__pontos_jogadores:
+                self.__pontos_jogadores.append((i[1][1], i[1][0]))
         self.__pontos_jogadores.sort(reverse=True)
         #print(self.__pontos_jogadores)
 
