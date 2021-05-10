@@ -26,11 +26,15 @@ pygame.display.set_caption("Jogo Teste")
 
 #carregando imagem do plano de funo
 PLANO_DE_FUNDO = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_jogo_princial.png")), (WIDTH, HEIGHT))
+#carregando porta de sair
+PORTA = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "porta.png")), (82, 105))
+
+
+
 
 # Novo evento criado para aumentar a pontuação conforme passa o tempo
 tempo = pygame.USEREVENT + 1
 pygame.time.set_timer(tempo, 5000)
-
 #cores
 branco = (255,255,255)
 preto = (0,0,0)
@@ -77,8 +81,10 @@ class Main():
         fim_de_jogo = False
         contador_fim_de_jogo = 0
 
-        def desenhar_janela():
-            WIN.blit(PLANO_DE_FUNDO, (0, 0))
+        def desenhar_janela(pos_y):
+            WIN.blit(PLANO_DE_FUNDO, (0, pos_y))
+            WIN.blit(PLANO_DE_FUNDO, (0, pos_y - HEIGHT + 1))
+            WIN.blit(PORTA, (574, 543))
 
             # mostrando textos na tela
             label_vidas = fonte.render(f"Vidas: {vidas}", True, preto)  # 1 - suavização de serrilhado
@@ -105,14 +111,17 @@ class Main():
             pygame.display.update()  # sempre que for desenhar, devemos atualizar a tela colocando a "nova imagem" por cima das outras que estavam desenhadas
 
         # quer dizer que o jogo vai executar a no máximo 60 quadros por segundo em qualquer máquina
+        pos_y=0 #posicao inicial da tela de fundo
         while run:
             clock.tick(FPS)
-            desenhar_janela()
-
+            desenhar_janela(pos_y)
+            pos_y+=velocidade_inimigo/2 #tela de fundo se move sempre a metade da velocidade do inimigo
+            if pos_y>=HEIGHT:
+                pos_y=0  #reseta posicao da tela de fundo
             if jogador.saude <= 0:
                 if vidas >= 1:
                     jogador.saude = saude
-                    vidas -= 1
+                    vidas -= 5
                 else:
                     fim_de_jogo = True
                     contador_fim_de_jogo += 1
@@ -123,6 +132,7 @@ class Main():
 
             # A pontuacao é retornada quando o jogador perde
             if fim_de_jogo:
+                velocidade_inimigo=0
                 if contador_fim_de_jogo > FPS * 3:
                     return jogador.pontuacao
                 else:
@@ -225,27 +235,29 @@ class Main():
                     jogador.inc_pontuacao(10)
 
                 mouse = pygame.mouse.get_pos()
+                print(mouse)
                 click = pygame.mouse.get_pressed()
-                if 624 > mouse[0] > 562 and 648 > mouse[1] > 543:
+                if 632 > mouse[0] > 593 and 629 > mouse[1] > 569:
                     if click[0] == 1:
                         return jogador.pontuacao
 
             teclas = pygame.key.get_pressed()  # retorna um dicioonário de todas as teclas e diz se estão pressionadas ou não
 
             # movimentos do jogador de acordo com a tecla pressionada
-            if teclas[pygame.K_a] and jogador.x - movimento_jogador > 0:  # esquerda
-                jogador.x -= movimento_jogador
-                parado = False
-            elif teclas[pygame.K_d] and jogador.x + movimento_jogador + jogador.get_width() < WIDTH:  # direita
-                jogador.x += movimento_jogador
-                parado = False
-            elif teclas[pygame.K_w] and jogador.y - movimento_jogador > 0:  # cima
-                jogador.y -= movimento_jogador
-                parado = False
-            elif teclas[
-                pygame.K_s] and jogador.y + movimento_jogador + jogador.get_height() + 2 * height_barra < HEIGHT:  # baixo
-                jogador.y += movimento_jogador
-                parado = False
+            if pygame.KEYDOWN:
+                if teclas[pygame.K_a] and jogador.x - movimento_jogador > 0:  # esquerda
+                    jogador.x -= movimento_jogador
+                    parado = False
+                if teclas[pygame.K_d] and jogador.x + movimento_jogador + jogador.get_width() < WIDTH:  # direita
+                    jogador.x += movimento_jogador
+                    parado = False
+                if teclas[pygame.K_w] and jogador.y - movimento_jogador > 0:  # cima
+                    jogador.y -= movimento_jogador
+                    parado = False
+                if teclas[
+                    pygame.K_s] and jogador.y + movimento_jogador + jogador.get_height() + 2 * height_barra < HEIGHT:  # baixo
+                    jogador.y += movimento_jogador
+                    parado = False
             else:
                 parado = True
 

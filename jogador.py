@@ -2,11 +2,13 @@ import pygame
 import os
 from personagem import Personagem
 
+pygame.mixer.init()
+
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 WH_JOGADOR = 80
-
 LASER_JOGADOR = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_4.png"))
-
+#som da colisao laser
+explodiu = pygame.mixer.Sound(os.path.join(BASE_DIR, "assets", "explodiu.mp3"))
 #carregando imagem do jogador
 JOGADOR = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "jogador_se_movendo.png")), (WH_JOGADOR, WH_JOGADOR))
 JOGADOR_PARADO = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "jogador_parado.png")), (WH_JOGADOR, WH_JOGADOR))
@@ -56,6 +58,7 @@ class Jogador(Personagem):
                 for objeto in objetos:
                     if laser.colisao(objeto):  # Colisão do laser do jogador contra o inimigo
                         objetos.remove(objeto)
+                        explodiu.play()
                         self.__pontuacao += 100  # Aumenta a pontuação caso algum inimigo seja atingido
                         if laser in self.lasers:
                             self.lasers.remove(laser)

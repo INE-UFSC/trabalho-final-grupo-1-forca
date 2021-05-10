@@ -14,7 +14,7 @@ clock = pygame.time.Clock()
 
 black = (0, 0, 0)
 
-tela_menu_principal = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_menu_principal.jpg")), (largura, altura))
+tela_menu_principal = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_menu_principal_com_nome.jpg")), (largura, altura))
 tela_nome = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_nome.png")), (largura, altura))
 tela_tutorial = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_tutorial.png")), (largura, altura))
 tela_volume = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_volume.png")), (largura, altura))
@@ -136,9 +136,8 @@ class Menu():
             else:
                 nome_y = 145
                 for i in range(len(self.__pontos_jogadores)):
-                    if i > 4:
-                        self.__pontos_jogadores = self.__pontos_jogadores[:5]
-                        break
+                    if i == 5:
+                        self.__lista_ranking.remove(self.__pontos_jogadores[i])
 
                     texto = f"{self.__pontos_jogadores[i][0]:<6} {self.__pontos_jogadores[i][1]}".title()
                     textSurf, textRect = text_objects_blue(texto, font)
