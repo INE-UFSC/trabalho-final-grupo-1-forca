@@ -6,33 +6,20 @@ import os
 from jogador import Jogador
 from inimigo import Inimigo
 from meteoro import Meteoro
-
+from Som import *
+from Sprites import *
 pygame.init()
 
 #definindo altura e largura da janela do meu jogo
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-WIDTH, HEIGHT = 650, 650
 WH_JOGADOR = 80
-WH_INIMIGO = 50
 
 #definindo que minha janela tera a largura e altura especificada
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
-#nome que aparece na aba da janela
-pygame.display.set_caption("Jogo Teste")
-
-#carregando imagem do plano de funo
-PLANO_DE_FUNDO = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_jogo_princial.png")), (WIDTH, HEIGHT))
-
-#carregando porta de sair
-PORTA = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "porta.png")), (82, 105))
-
-#carregando explosão para o fim de jogo
-EXPLOSAO = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "explosão.png")), (190,190))
-
-#carregando som de morte do jogador
-morte = pygame.mixer.Sound(os.path.join(BASE_DIR, "assets", "explosao_fim_de_jogo.ogg"))
-
+#print(pygame.mixer.Sound.get_volume(musica))
+#pygame.mixer.Sound.set_volume(musica,0.5)         #Aqui vendo como o set e o get do volume funcionam, usar no menu volume depois de arrumar os assets
+#print(pygame.mixer.Sound.get_volume(musica))
 
 # Novo evento criado para aumentar a pontuação conforme passa o tempo
 tempo = pygame.USEREVENT + 1
@@ -109,7 +96,7 @@ class Main():
             jogador.desenhar(WIN, height_barra, parado)
 
             if fim_de_jogo:
-
+                pygame.mixer.music.stop()
                 WIN.blit(EXPLOSAO, (jogador.x - 50, jogador.y-20))
                 fim_de_jogo_label = fonte_fim_de_jogo.render("Aguarde", True, preto)
                 WIN.blit(fim_de_jogo_label, (WIDTH / 2 - fim_de_jogo_label.get_width() / 2,
@@ -146,8 +133,9 @@ class Main():
 
                 velocidade_inimigo=0
                 if contador_fim_de_jogo == FPS/60:
-                    morte.play()
+                    MORTE.play()
                 elif contador_fim_de_jogo > FPS * 3:
+                    MUSICA_FIM.play()
                     return jogador.pontuacao
                 else:
                     continue
@@ -197,6 +185,7 @@ class Main():
                     inimigo.atirar()
 
                 if colidir(inimigo, jogador):
+                    COLIDIU.play()
                     jogador.saude -= 10
                     inimigos.remove(inimigo)
 
@@ -232,6 +221,7 @@ class Main():
                 meteoro.movimentar(velocidade_meteoro)
 
                 if colidir(meteoro, jogador):
+                    COLIDIU.play()
                     jogador.saude -= 15
                     meteoros.remove(meteoro)
 

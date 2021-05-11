@@ -1,12 +1,14 @@
 import pygame
 import os
 from main import Main
+from Som import MUSICA
+from Sprites import *
 from rankingDAO import RankingDAO
 
 pygame.init()
+pygame.init()
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-largura = 650
-altura = 650
+
 
 pygame.display.set_caption('Caderno Invaders')
 gameDisplay = pygame.display.set_mode((largura, altura))
@@ -14,13 +16,7 @@ clock = pygame.time.Clock()
 
 black = (0, 0, 0)
 
-tela_menu_principal = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_menu_principal_com_nome.jpg")), (largura, altura))
-tela_nome = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_nome.png")), (largura, altura))
-tela_tutorial = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_tutorial.png")), (largura, altura))
-tela_volume = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_volume.png")), (largura, altura))
-tela_ranking = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_ranking.png")), (largura, altura))
-tela_jogo_principal = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_jogo_princial.png")), (largura, altura))
-tela_fim = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_fim.png")), (largura, altura))
+
 
 
 def botao(x, x2, y, y2, action=None):
@@ -53,6 +49,10 @@ class Menu():
 
     def menu_principal(self):
         pygame.event.wait()
+        if not(pygame.mixer.music.get_busy()):
+            pygame.mixer.music.play(-1)
+        else:
+            pass
         while not self.__crashou:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
