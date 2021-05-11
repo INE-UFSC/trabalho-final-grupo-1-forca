@@ -27,6 +27,13 @@ PLANO_DE_FUNDO = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR,
 #carregando porta de sair
 PORTA = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "porta.png")), (82, 105))
 
+#carregando explosão para o fim de jogo
+EXPLOSAO = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "explosão.png")), (190,190))
+
+#carregando som de morte do jogador
+morte = pygame.mixer.Sound(os.path.join(BASE_DIR, "assets", "explosao_fim_de_jogo.ogg"))
+
+
 # Novo evento criado para aumentar a pontuação conforme passa o tempo
 tempo = pygame.USEREVENT + 1
 pygame.time.set_timer(tempo, 5000)
@@ -102,6 +109,8 @@ class Main():
             jogador.desenhar(WIN, height_barra, parado)
 
             if fim_de_jogo:
+
+                WIN.blit(EXPLOSAO, (jogador.x - 50, jogador.y-20))
                 fim_de_jogo_label = fonte_fim_de_jogo.render("Aguarde", True, preto)
                 WIN.blit(fim_de_jogo_label, (WIDTH / 2 - fim_de_jogo_label.get_width() / 2,
                                              HEIGHT / 2 - fim_de_jogo_label.get_height() / 2))
@@ -121,9 +130,11 @@ class Main():
                 if vidas >= 1:
                     jogador.saude = saude
                     vidas -= 1
-                else:
-                    fim_de_jogo = True
-                    contador_fim_de_jogo += 1
+
+               #else:
+
+                #    fim_de_jogo = True
+                 #   contador_fim_de_jogo += 1
 
             if vidas <= 0:
                 fim_de_jogo = True
@@ -131,8 +142,12 @@ class Main():
 
             # A pontuacao é retornada quando o jogador perde
             if fim_de_jogo:
+
+
                 velocidade_inimigo=0
-                if contador_fim_de_jogo > FPS * 3:
+                if contador_fim_de_jogo == FPS/60:
+                    morte.play()
+                elif contador_fim_de_jogo > FPS * 3:
                     return jogador.pontuacao
                 else:
                     continue
