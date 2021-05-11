@@ -4,6 +4,7 @@ from personagem import Personagem
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
+# Tamanho Inimigo
 WH_INIMIGO = 75
 
 #carregando imagem dos aliens inimigos

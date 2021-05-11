@@ -15,9 +15,6 @@ WIDTH, HEIGHT = 650, 650
 WH_JOGADOR = 80
 WH_INIMIGO = 50
 
-#carregando imagem do jogador
-JOGADOR = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "jogador_se_movendo.png")), (WH_JOGADOR, WH_JOGADOR))
-
 #definindo que minha janela tera a largura e altura especificada
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -26,15 +23,18 @@ pygame.display.set_caption("Jogo Teste")
 
 #carregando imagem do plano de funo
 PLANO_DE_FUNDO = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_jogo_princial.png")), (WIDTH, HEIGHT))
+
 #carregando porta de sair
 PORTA = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "porta.png")), (82, 105))
-
-
-
 
 # Novo evento criado para aumentar a pontuação conforme passa o tempo
 tempo = pygame.USEREVENT + 1
 pygame.time.set_timer(tempo, 5000)
+
+# Fontes
+fonte = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.TTF"), 50)
+fonte_fim_de_jogo = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.TTF"), 60)
+
 #cores
 branco = (255,255,255)
 preto = (0,0,0)
@@ -46,15 +46,14 @@ def colidir(objeto1, objeto2):
 
     return objeto1.mascara.overlap(objeto2.mascara, (offset_x, offset_y)) != None
 
+
 class Main():
 
     def main(self):
         run = True
         FPS = 60
         nivel = 1
-        vidas = 5
-        fonte = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.TTF"), 50)
-        fonte_fim_de_jogo = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.TTF"), 60)
+        vidas = 1
         clock = pygame.time.Clock()
         parado = True
 
@@ -68,7 +67,6 @@ class Main():
 
         # variáveis pro meteoro
         meteoros = []
-        #onda_de_meteoros = 2
         velocidade_meteoro = 1
 
         velocidade_laser = 7
@@ -76,7 +74,7 @@ class Main():
         saude = 100
 
         movimento_jogador = 8
-        jogador = Jogador(int(WIDTH / 2 - JOGADOR.get_width() / 2), int(HEIGHT - 125), HEIGHT, saude)
+        jogador = Jogador(int(WIDTH / 2 - WH_JOGADOR / 2), int(HEIGHT - 125), HEIGHT, saude)
 
         fim_de_jogo = False
         contador_fim_de_jogo = 0
@@ -105,8 +103,8 @@ class Main():
 
             if fim_de_jogo:
                 fim_de_jogo_label = fonte_fim_de_jogo.render("Aguarde", True, preto)
-                WIN.blit(fim_de_jogo_label, (
-                    WIDTH / 2 - fim_de_jogo_label.get_width() / 2, HEIGHT / 2 - fim_de_jogo_label.get_height() / 2))
+                WIN.blit(fim_de_jogo_label, (WIDTH / 2 - fim_de_jogo_label.get_width() / 2,
+                                             HEIGHT / 2 - fim_de_jogo_label.get_height() / 2))
 
             pygame.display.update()  # sempre que for desenhar, devemos atualizar a tela colocando a "nova imagem" por cima das outras que estavam desenhadas
 
@@ -118,6 +116,7 @@ class Main():
             pos_y+=velocidade_inimigo/2 #tela de fundo se move sempre a metade da velocidade do inimigo
             if pos_y>=HEIGHT:
                 pos_y=0  #reseta posicao da tela de fundo
+
             if jogador.saude <= 0:
                 if vidas >= 1:
                     jogador.saude = saude
@@ -170,7 +169,8 @@ class Main():
                 onda_de_inimigos += 5
 
                 for i in range(onda_de_inimigos):
-                    inimigo = Inimigo(random.randrange(50, WIDTH - 128), random.randrange(-8000 * (nivel / 5), -128),
+                    inimigo = Inimigo(random.randrange(50, WIDTH - 128),
+                                      random.randrange(-8000 * (nivel / 5), -128),
                                       str(random.randrange(1, 4)), HEIGHT, saude)  # ver depois sobre o -1500
                     inimigos.append(inimigo)
 
@@ -243,6 +243,7 @@ class Main():
             teclas = pygame.key.get_pressed()  # retorna um dicioonário de todas as teclas e diz se estão pressionadas ou não
 
             # movimentos do jogador de acordo com a tecla pressionada
+            parado = True
             if pygame.KEYDOWN:
                 if teclas[pygame.K_a] and jogador.x - movimento_jogador > 0:  # esquerda
                     jogador.x -= movimento_jogador
@@ -257,8 +258,6 @@ class Main():
                     pygame.K_s] and jogador.y + movimento_jogador + jogador.get_height() + 2 * height_barra < HEIGHT:  # baixo
                     jogador.y += movimento_jogador
                     parado = False
-            else:
-                parado = True
 
             # Laser Jogador
             jogador.mover_lasers(-velocidade_laser, inimigos, meteoros)
