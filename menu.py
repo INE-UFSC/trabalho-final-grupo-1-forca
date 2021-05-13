@@ -1,7 +1,7 @@
 import pygame
 import os
 from main import Main
-from aux.Sprites import *
+from arquivos.Sprites import *
 from persistencia.rankingDAO import RankingDAO
 
 pygame.init()

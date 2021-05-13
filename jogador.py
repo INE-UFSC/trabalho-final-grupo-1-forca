@@ -1,7 +1,7 @@
 import pygame
 import os
 from personagem import Personagem
-from aux.Som import *
+from arquivos.Som import *
 
 pygame.mixer.init()
 
