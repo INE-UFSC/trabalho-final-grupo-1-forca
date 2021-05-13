@@ -6,8 +6,8 @@ import os
 from jogador import Jogador
 from inimigo import Inimigo
 from meteoro import Meteoro
-from Som import *
-from Sprites import *
+from aux.Som import *
+from aux.Sprites import *
 from atirar import Atirar
 pygame.init()
 

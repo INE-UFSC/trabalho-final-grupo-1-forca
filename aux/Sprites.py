@@ -1,10 +1,9 @@
 import pygame
 import os
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 WIDTH, HEIGHT = 650, 650
 #fontes
-
 
 #TELAS DO MENU
 largura = WIDTH

@@ -1,9 +1,8 @@
 import pygame
 import os
 from main import Main
-from Som import MUSICA
-from Sprites import *
-from rankingDAO import RankingDAO
+from aux.Sprites import *
+from persistencia.rankingDAO import RankingDAO
 
 pygame.init()
 pygame.init()
