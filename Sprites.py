@@ -18,6 +18,8 @@ tela_ranking = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "
 tela_jogo_principal = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_jogo_princial.png")), (largura, altura))
 tela_fim = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_fim.png")), (largura, altura))
 
+opcoes_barra = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "opcoes_barra.png")), (61, 90))
+
 #TELAS MAIN
 #carregando imagem do plano de funo
 PLANO_DE_FUNDO = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_jogo_princial.png")), (WIDTH, HEIGHT))

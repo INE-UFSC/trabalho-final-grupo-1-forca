@@ -88,7 +88,7 @@ class Menu():
                         self.__nomeAtual = text
 
             gameDisplay.blit(tela_nome, (0, 0))
-            
+
             font = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.TTF"), 75)
             textSurf, textRect = text_objects(text, font)
             textRect.center = (338, 388)
@@ -177,6 +177,17 @@ class Menu():
             #botão voltar
             botao(265, 386, 568, 608, self.menu_principal)
 
+            if self.__volume == 0:
+                gameDisplay.blit(opcoes_barra, (106, 222))
+            if self.__volume == 1:
+                gameDisplay.blit(opcoes_barra, (202, 222))
+            if self.__volume == 2:
+                gameDisplay.blit(opcoes_barra, (298, 222))
+            if self.__volume == 3:
+                gameDisplay.blit(opcoes_barra, (394, 222))
+            if self.__volume == 4:
+                gameDisplay.blit(opcoes_barra, (490, 222))
+
             pygame.display.flip()
             clock.tick(60)
 
@@ -186,8 +197,6 @@ class Menu():
                 if event.type == pygame.QUIT:
                     self.__crashou = False
                     self.menu_sair()
-
-                #print(event)
 
             gameDisplay.blit(tela_fim, (0, 0))
 
@@ -227,6 +236,7 @@ class Menu():
             self.tela_fim()
 
     def menu_sair(self):
+        pygame.display.quit()
         pygame.quit()
         quit()
 
