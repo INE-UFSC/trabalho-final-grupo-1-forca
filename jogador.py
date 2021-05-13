@@ -49,29 +49,7 @@ class Jogador(Personagem):
         self.__max_saude = max_saude
 
     def inc_pontuacao(self, inc_pontuacao):  #Incrementa a pontuação
-        self.__pontuacao += inc_pontuacao
-
-    #Sobrescreve método mover_lasers() de Personagem
-    def mover_lasers(self, velocidade, objetos, meteoros):
-        self.resfriamento_laser()
-        for laser in self.lasers:
-            laser.movimentar(velocidade)
-
-            if laser.fora_da_tela(self.height):
-                self.lasers.remove(laser)
-            else:
-                for objeto in objetos:
-                    if laser.colisao(objeto):  # Colisão do laser do jogador contra o inimigo
-                        objetos.remove(objeto)
-                        EXPLODIU.play()
-                        self.__pontuacao += 100  # Aumenta a pontuação caso algum inimigo seja atingido
-                        if laser in self.lasers:
-                            self.lasers.remove(laser)
-
-                for meteoro in meteoros:
-                    if laser.colisao(meteoro) and laser in self.lasers:
-                        self.lasers.remove(laser)
-                        
+        self.__pontuacao += inc_pontuacao                        
     
     def desenhar(self, window, height_barra, parado):
         if not parado:
@@ -79,11 +57,13 @@ class Jogador(Personagem):
         else:
             window.blit(self.personagem_parado_img, (self.x, self.y))
 
-            for laser in self.lasers:
-                laser.desenhar(window)
-
         self.barra_de_saude(window, height_barra)
 
+    def dano(self, pontos):
+        self.saude -= pontos
+
+    def ganha_pontos(self, pontos):
+        self.pontuacao += pontos
 
     def barra_de_saude(self, window, height_barra):
         pygame.draw.rect(window, (248, 12, 58), (self.x, self.y + self.personagem_img.get_height() + height_barra, self.personagem_img.get_width(), height_barra))

@@ -35,3 +35,9 @@ class Objeto(ABC):
     
     def get_height(self):
         return self.objeto_img.get_height()
+    
+    def colisao(self, objeto, lista = None):
+        offset_x = int(objeto.x - self.x)
+        offset_y = int(objeto.y - self.y)
+        
+        return self.mascara.overlap(objeto.mascara, (offset_x, offset_y)) != None

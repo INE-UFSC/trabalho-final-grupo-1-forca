@@ -8,6 +8,7 @@ from inimigo import Inimigo
 from meteoro import Meteoro
 from Som import *
 from Sprites import *
+from atirar import Atirar
 pygame.init()
 
 #definindo altura e largura da janela do meu jogo
@@ -32,14 +33,6 @@ fonte_fim_de_jogo = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayo
 #cores
 branco = (255,255,255)
 preto = (0,0,0)
-
-
-def colidir(objeto1, objeto2):
-    offset_x = int(objeto2.x - objeto1.x)
-    offset_y = int(objeto2.y - objeto1.y)
-
-    return objeto1.mascara.overlap(objeto2.mascara, (offset_x, offset_y)) != None
-
 
 class Main():
 
@@ -67,6 +60,9 @@ class Main():
         height_barra = 10
         saude = 100
 
+        lasers_inimigos = []
+        lasers_jogador = []
+
         movimento_jogador = 8
         jogador = Jogador(int(WIDTH / 2 - WH_JOGADOR / 2), int(HEIGHT - 125), HEIGHT, saude)
 
@@ -92,6 +88,12 @@ class Main():
 
             for meteoro in meteoros:
                 meteoro.desenhar(WIN)
+            
+            for laser_inimigo in lasers_inimigos:
+                laser_inimigo.desenhar(WIN)
+
+            for laser_jogador in lasers_jogador:
+                laser_jogador.desenhar(WIN)
 
             jogador.desenhar(WIN, height_barra, parado)
 
@@ -179,18 +181,20 @@ class Main():
 
             for inimigo in inimigos[:]:
                 inimigo.movimentar(velocidade_inimigo)
-                inimigo.mover_lasers(velocidade_laser, jogador)
 
                 if random.randrange(0, 4 * FPS) == 1:
-                    inimigo.atirar()
+                    lasers_inimigos.append(Atirar(inimigo))
 
-                if colidir(inimigo, jogador):
+                if inimigo.colisao(jogador):
                     COLIDIU.play()
-                    jogador.saude -= 10
+                    jogador.dano(15)
                     inimigos.remove(inimigo)
 
                 elif inimigo.y + inimigo.get_height() > HEIGHT:
                     inimigos.remove(inimigo)
+                #Fazer um metodo fora da tela
+
+            
 
             # lógica de criação, remoção e movimento dos meteoros
             if len(meteoros) == 0:
@@ -220,13 +224,14 @@ class Main():
             for meteoro in meteoros[:]:
                 meteoro.movimentar(velocidade_meteoro)
 
-                if colidir(meteoro, jogador):
+                if meteoro.colisao(jogador):
                     COLIDIU.play()
-                    jogador.saude -= 15
+                    jogador.dano(15)
                     meteoros.remove(meteoro)
 
                 elif meteoro.y > HEIGHT or meteoro.x > WIDTH:
-                    meteoros.remove(meteoro)
+                    meteoros.remove(meteoro)     
+                #fazer metodo fora_da_tela
 
             # EVENTOS
             # vai passar por todos os eventos que ocorreram, 60 vezes por segundo
@@ -235,7 +240,7 @@ class Main():
                 if event.type == pygame.QUIT:
                     quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    jogador.atirar()
+                    lasers_jogador.append(Atirar(jogador))
                 if event.type == tempo:
                     jogador.inc_pontuacao(10)
 
@@ -264,5 +269,19 @@ class Main():
                     jogador.y += movimento_jogador
                     parado = False
 
-            # Laser Jogador
-            jogador.mover_lasers(-velocidade_laser, inimigos, meteoros)
+            for laser_inimigo in lasers_inimigos:
+                laser_inimigo.mover_lasers(velocidade_laser, lasers_inimigos)
+                if laser_inimigo.colisao(jogador):
+                    lasers_inimigos.remove(laser_inimigo)
+                    jogador.dano(15)
+
+            for laser_jogador in lasers_jogador:
+                laser_jogador.mover_lasers(-velocidade_laser, lasers_jogador)
+                for inimigo in inimigos:
+                    if laser_jogador.colisao(inimigo):
+                        inimigos.remove(inimigo)
+                        lasers_jogador.remove(laser_jogador)
+                        jogador.inc_pontuacao(10)
+                for meteoro in meteoros:
+                    if laser_jogador.colisao(meteoro):
+                        lasers_jogador.remove(laser_jogador)
