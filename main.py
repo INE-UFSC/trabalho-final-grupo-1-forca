@@ -34,9 +34,12 @@ fonte_fim_de_jogo = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayo
 branco = (255,255,255)
 preto = (0,0,0)
 
+# Lista sons (se novos sprites de som forem criados, adicionar nesta lista =) )
+lista_sons = [MUSICA_FIM, EXPLODIU, COLIDIU, MORTE]
+
 class Main():
 
-    def main(self):
+    def main(self, volume):
         run = True
         FPS = 60
         nivel = 1
@@ -56,18 +59,26 @@ class Main():
         meteoros = []
         velocidade_meteoro = 1
 
-        velocidade_laser = 7
+        # Saude
         height_barra = 10
         saude = 100
 
+        # Lasers
+        resfriamento_laser = 0
+        velocidade_laser = 7
         lasers_inimigos = []
         lasers_jogador = []
 
+        # Jogador
         movimento_jogador = 8
         jogador = Jogador(int(WIDTH / 2 - WH_JOGADOR / 2), int(HEIGHT - 125), HEIGHT, saude)
 
         fim_de_jogo = False
         contador_fim_de_jogo = 0
+
+        # Definindo volume
+        for som in lista_sons:
+            som.set_volume(volume)
 
         def desenhar_janela(pos_y):
             WIN.blit(PLANO_DE_FUNDO, (0, pos_y))
@@ -107,23 +118,18 @@ class Main():
             pygame.display.update()  # sempre que for desenhar, devemos atualizar a tela colocando a "nova imagem" por cima das outras que estavam desenhadas
 
         # quer dizer que o jogo vai executar a no máximo 60 quadros por segundo em qualquer máquina
-        pos_y=0 #posicao inicial da tela de fundo
+        pos_y = 0 #posicao inicial da tela de fundo
         while run:
             clock.tick(FPS)
             desenhar_janela(pos_y)
-            pos_y+=velocidade_inimigo/2 #tela de fundo se move sempre a metade da velocidade do inimigo
-            if pos_y>=HEIGHT:
-                pos_y=0  #reseta posicao da tela de fundo
+            pos_y += velocidade_inimigo/2  #tela de fundo se move sempre a metade da velocidade do inimigo
+            if pos_y >= HEIGHT:
+                pos_y = 0  #reseta posicao da tela de fundo
 
             if jogador.saude <= 0:
                 if vidas >= 1:
                     jogador.saude = saude
                     vidas -= 1
-
-               #else:
-
-                #    fim_de_jogo = True
-                 #   contador_fim_de_jogo += 1
 
             if vidas <= 0:
                 fim_de_jogo = True
@@ -131,14 +137,12 @@ class Main():
 
             # A pontuacao é retornada quando o jogador perde
             if fim_de_jogo:
-
-
-                velocidade_inimigo=0
+                velocidade_inimigo = 0
                 if contador_fim_de_jogo == FPS/60:
                     MORTE.play()
                 elif contador_fim_de_jogo > FPS * 3:
                     MUSICA_FIM.play()
-                    return jogador.pontuacao
+                    return True, jogador.pontuacao
                 else:
                     continue
 
@@ -194,7 +198,6 @@ class Main():
                     inimigos.remove(inimigo)
                 #Fazer um metodo fora da tela
 
-            
 
             # lógica de criação, remoção e movimento dos meteoros
             if len(meteoros) == 0:
@@ -240,7 +243,9 @@ class Main():
                 if event.type == pygame.QUIT:
                     quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    lasers_jogador.append(Atirar(jogador))
+                    if not resfriamento_laser:
+                        lasers_jogador.append(Atirar(jogador))
+                        resfriamento_laser = 1
                 if event.type == tempo:
                     jogador.inc_pontuacao(10)
 
@@ -248,7 +253,7 @@ class Main():
                 click = pygame.mouse.get_pressed()
                 if 632 > mouse[0] > 593 and 629 > mouse[1] > 569:
                     if click[0] == 1:
-                        return jogador.pontuacao
+                        return True, jogador.pontuacao
 
             teclas = pygame.key.get_pressed()  # retorna um dicioonário de todas as teclas e diz se estão pressionadas ou não
 
@@ -273,15 +278,31 @@ class Main():
                 laser_inimigo.mover_lasers(velocidade_laser, lasers_inimigos)
                 if laser_inimigo.colisao(jogador):
                     lasers_inimigos.remove(laser_inimigo)
+                    # Definir o som de quando o jogador tomar um dano de laser
                     jogador.dano(15)
+
+            # Resfriamento Laser
+            if resfriamento_laser >= 20:
+                resfriamento_laser = 0
+            elif resfriamento_laser > 0:
+                resfriamento_laser += 1
 
             for laser_jogador in lasers_jogador:
                 laser_jogador.mover_lasers(-velocidade_laser, lasers_jogador)
                 for inimigo in inimigos:
                     if laser_jogador.colisao(inimigo):
+                        EXPLODIU.play()
                         inimigos.remove(inimigo)
-                        lasers_jogador.remove(laser_jogador)
-                        jogador.inc_pontuacao(10)
+                        jogador.inc_pontuacao(100)
+                        try:
+                            lasers_jogador.remove(laser_jogador)
+                        except ValueError:
+                            print("ValueError")
+                            pass
                 for meteoro in meteoros:
                     if laser_jogador.colisao(meteoro):
-                        lasers_jogador.remove(laser_jogador)
+                        try:
+                            lasers_jogador.remove(laser_jogador)
+                        except ValueError:
+                            print("ValueError")
+                            pass

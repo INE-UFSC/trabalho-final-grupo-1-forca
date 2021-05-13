@@ -62,8 +62,6 @@ class Jogador(Personagem):
     def dano(self, pontos):
         self.saude -= pontos
 
-    def ganha_pontos(self, pontos):
-        self.pontuacao += pontos
 
     def barra_de_saude(self, window, height_barra):
         pygame.draw.rect(window, (248, 12, 58), (self.x, self.y + self.personagem_img.get_height() + height_barra, self.personagem_img.get_width(), height_barra))

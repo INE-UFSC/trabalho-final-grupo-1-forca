@@ -46,6 +46,7 @@ class Menu():
         self.__ranking = RankingDAO()
         self.__nomeAtual = ''
         self.__pontos_jogadores = []
+        self.__volume = 4
 
     def menu_principal(self):
         pygame.event.wait()
@@ -92,8 +93,10 @@ class Menu():
             textSurf, textRect = text_objects(text, font)
             textRect.center = (338, 388)
             gameDisplay.blit(textSurf, textRect)
+            gameDisplay.blit(PORTA, (574, 543))
 
             botao(256, 405, 580, 608, self.menu_tutorial)
+            botao(590, 640, 560, 640, self.menu_principal)
 
             pygame.display.update()
             clock.tick(60)
@@ -160,9 +163,16 @@ class Menu():
 
             gameDisplay.blit(tela_volume, (0, 0))
 
+            pygame.event.wait()
             #botões volume
             botao(137, 267, 410, 511, self.diminuir_volume)
             botao(403, 522, 410, 514, self.aumentar_volume)
+
+            rect = barra_volume[self.__volume].get_rect()
+            rect.topright = (540, 250)
+            gameDisplay.blit(barra_volume[self.__volume], rect)
+
+            pygame.mixer.music.set_volume(self.__volume/4)
 
             #botão voltar
             botao(265, 386, 568, 608, self.menu_principal)
@@ -197,10 +207,12 @@ class Menu():
         #print(self.__pontos_jogadores)
 
     def diminuir_volume(self):
-        pass
+        if self.__volume > 0:
+            self.__volume -= 1
 
     def aumentar_volume(self):
-        pass
+        if self.__volume < 4:
+            self.__volume += 1
 
     def salvar_pontuacao(self, pontuacao):
         self.__ranking.add(self.__nomeAtual, pontuacao)
@@ -208,9 +220,9 @@ class Menu():
 
     def comecar_jogo(self):
         jogo_comecado = Main()
-        pontuacao = jogo_comecado.main()  # início do jogo
+        encerrar, pontuacao = jogo_comecado.main(self.__volume/4)  # início do jogo
 
-        if pontuacao:
+        if encerrar:
             self.salvar_pontuacao(pontuacao)
             self.tela_fim()
 

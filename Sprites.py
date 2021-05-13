@@ -25,3 +25,12 @@ PLANO_DE_FUNDO = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR,
 EXPLOSAO = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "explosão.png")), (190,190))
 #carregando porta de sair
 PORTA = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "porta.png")), (82, 105))
+
+# Barra Volume
+imagem_volume = pygame.image.load(os.path.join(BASE_DIR, "assets", "barra_volume.png"))
+barra_volume = [pygame.transform.scale(imagem_volume, (408, 30)),
+                pygame.transform.scale(imagem_volume, (306, 30)),
+                pygame.transform.scale(imagem_volume, (204, 30)),
+                pygame.transform.scale(imagem_volume, (102, 30)),
+                pygame.transform.scale(imagem_volume, (0, 0))
+                ]

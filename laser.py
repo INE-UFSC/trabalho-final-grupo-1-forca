@@ -10,14 +10,12 @@ LASER_3 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_1.png"))
 LASER_4 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_1.png"))
 
 class Laser():
-    RESFRIAMENTO = 20
     
     def __init__(self, x: int, y: int,  height: int, laser_img):
         self.__x = x
         self.__y = y
         self.__laser_img = laser_img
         self.__mascara = pygame.mask.from_surface(self.laser_img)
-        self.__contador_resfriamento_laser = 0
         self.__height = height
 
     @property
@@ -37,10 +35,6 @@ class Laser():
         return self.__mascara
     
     @property
-    def contador_resfriamento_laser(self):
-        return self.__contador_resfriamento_laser
-    
-    @property
     def height(self):
         return self.__height
 
@@ -51,31 +45,17 @@ class Laser():
     @y.setter
     def y(self, y: int):
         self.__y = y
-    
-    @contador_resfriamento_laser.setter
-    def contador_resfriamento_laser(self, contador_resfriamento_laser):
-        self.__contador_resfriamento_laser = contador_resfriamento_laser    
 
     def desenhar(self, window):
         window.blit(self.laser_img, (self.x, self.y))
-
-    def movimentar(self, velocidade):
-        self.y += velocidade
     
-    def fora_da_tela(self, height):
-        return not(self.y <= height and self.y >= 0)
+    def fora_da_tela(self):
+        return not(self.y <= self.height and self.y >= 0)
     
     def mover_lasers(self, velocidade, lasers):
-        self.resfriamento_laser()
         self.movimentar(velocidade)
-        if self.fora_da_tela(self.height):
+        if self.fora_da_tela():
             lasers.remove(self)
-    
-    def resfriamento_laser(self):
-        if self.contador_resfriamento_laser >= self.RESFRIAMENTO:
-            self.contador_resfriamento_laser = 0
-        elif self.contador_resfriamento_laser > 0:
-            self.contador_resfriamento_laser += 1
 
     def movimentar(self, velocidade):
         self.y += velocidade
