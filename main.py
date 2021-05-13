@@ -194,7 +194,7 @@ class Main():
                     jogador.dano(15)
                     inimigos.remove(inimigo)
 
-                elif inimigo.y + inimigo.get_height() > HEIGHT:
+                elif inimigo.y > HEIGHT:
                     inimigos.remove(inimigo)
                 #Fazer um metodo fora da tela
 
