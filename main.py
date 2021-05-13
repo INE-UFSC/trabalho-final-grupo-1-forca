@@ -8,6 +8,7 @@ from inimigo import Inimigo
 from meteoro import Meteoro
 from escudo import Escudo
 from vida import Vida
+from boost import Boost
 from Som import *
 from Sprites import *
 from atirar import Atirar
@@ -60,6 +61,11 @@ class Main():
         #variáveis pro meteoro
         meteoros = []
         velocidade_meteoro = 1
+
+        #variáveis pro boost
+        boosts = []
+        onda_de_boost = 1
+        velocidade_boost = 3
 
         #vidas
         vidas_a_captar = []
@@ -120,6 +126,9 @@ class Main():
 
             for laser_jogador in lasers_jogador:
                 laser_jogador.desenhar(WIN)
+
+            for boost in boosts:
+                boost.desenhar(WIN)
 
             for escudo in escudos:
                 escudo.desenhar(WIN)
@@ -216,7 +225,7 @@ class Main():
                 if inimigo.colisao(jogador):
                     COLIDIU.play()
                     if ativar_escudo:
-                        jogador.dano(10)
+                        jogador.dano(7)
                     else:
                         jogador.dano(15)
                     inimigos.remove(inimigo)
@@ -257,7 +266,7 @@ class Main():
                 if meteoro.colisao(jogador):
                     COLIDIU.play()
                     if ativar_escudo:
-                        jogador.dano(10)
+                        jogador.dano(7)
                     else:
                         jogador.dano(15)
                     meteoros.remove(meteoro)
@@ -266,8 +275,28 @@ class Main():
                     meteoros.remove(meteoro)
                 #fazer metodo fora_da_tela
 
-            #lógica do escudo
+            #logica boost
+            if len(boosts) == 0:
+                if random.randrange(0, 1000) == 9:
+                    onda_de_boost += 1
 
+                for i in range(onda_de_boost):
+                    if random.randrange(0, 1000) == 9:
+                        boost = Boost(-110, random.randrange(0, 400), HEIGHT, WIDTH)
+                        boosts.append(boost)
+
+            for boost in boosts[:]:
+                boost.movimentar(velocidade_boost)
+
+                if boost.colisao(jogador):
+                    jogador.inc_pontuacao(500)
+                    boosts.remove(boost)
+
+                elif boost.y > HEIGHT or boost.x > WIDTH:
+                    boosts.remove(boost)
+
+
+            #lógica do escudo
             #escudos não captados
             if len(escudos) == 0:
                 onda_de_escudos += 1
@@ -300,7 +329,10 @@ class Main():
 
                 if vida.colisao(jogador):
                     vidas_a_captar.remove(vida)
-                    saude += 10
+                    if jogador.saude + 10 <= 90:
+                        jogador.saude += 10
+                    elif jogador.saude + 10 > 90 and jogador.saude + 10 < 100:
+                        jogador.saude = 100
 
                 elif vida.y > HEIGHT:
                     vidas_a_captar.remove(vida)
@@ -353,7 +385,7 @@ class Main():
                     lasers_inimigos.remove(laser_inimigo)
                     # Definir o som de quando o jogador tomar um dano de laser
                     if ativar_escudo:
-                        jogador.dano(10)
+                        jogador.dano(7)
                     else:
                         jogador.dano(15)
 
