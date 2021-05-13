@@ -7,6 +7,7 @@ from jogador import Jogador
 from inimigo import Inimigo
 from meteoro import Meteoro
 from escudo import Escudo
+from vida import Vida
 from Som import *
 from Sprites import *
 from atirar import Atirar
@@ -59,6 +60,11 @@ class Main():
         #variáveis pro meteoro
         meteoros = []
         velocidade_meteoro = 1
+
+        #vidas
+        vidas_a_captar = []
+        onda_de_vida = 1
+        velocidade_vida = 5
 
         #escudo
         escudos = []
@@ -117,6 +123,9 @@ class Main():
 
             for escudo in escudos:
                 escudo.desenhar(WIN)
+
+            for vida in vidas_a_captar:
+                vida.desenhar(WIN)
 
             if ativar_escudo:
                 jogador.desenhar_escudo(WIN)
@@ -277,6 +286,24 @@ class Main():
 
                 elif escudo.y > HEIGHT:
                     escudos.remove(escudo)
+
+            #vida
+            if len(vidas_a_captar) == 0:
+                onda_de_vida += 1
+
+                for _ in range(onda_de_vida):
+                    vida = Vida(random.randrange(50, WIDTH - 128), random.randrange(-8000 * (nivel / 5), -128), HEIGHT, WIDTH)  # ver depois sobre o -1500
+                    vidas_a_captar.append(vida)
+
+            for vida in vidas_a_captar[:]:
+                vida.movimentar(velocidade_vida)
+
+                if vida.colisao(jogador):
+                    vidas_a_captar.remove(vida)
+                    saude += 10
+
+                elif vida.y > HEIGHT:
+                    vidas_a_captar.remove(vida)
 
             # EVENTOS
             # vai passar por todos os eventos que ocorreram, 60 vezes por segundo

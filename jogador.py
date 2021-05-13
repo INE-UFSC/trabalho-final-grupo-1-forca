@@ -64,11 +64,11 @@ class Jogador(Personagem):
         self.barra_de_saude(window, height_barra)
 
     def desenhar_escudo(self, window):
-        r = random.randrange(0, 2)
-        if r == 1:
-            window.blit(self.escudo_img, (self.x, self.y))
+        r = random.randrange(0, 100)
+        if r > 500:
+            window.blit(self.escudo_img, (self.x - 10, self.y - 10))
         else:
-            window.blit(self.escudo_img2, (self.x, self.y))
+            window.blit(self.escudo_img2, (self.x - 10, self.y - 10))
 
     def dano(self, pontos):
         self.saude -= pontos

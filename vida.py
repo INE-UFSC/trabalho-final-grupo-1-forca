@@ -4,13 +4,12 @@ from objeto import Objeto
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-escudo = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "escudo.png")), (30, 30))
-escudo2 = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "escudo2.png")), (30, 30))
+vida = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "vida.png")), (30, 30))
 
-class Escudo(Objeto):
+class Vida(Objeto):
     def __init__(self, x: int, y: int, height: int, width: int):
         super().__init__(x, y, height, width)
-        self.objeto_img = escudo
+        self.objeto_img = vida
         self.__mascara = pygame.mask.from_surface(self.objeto_img) #essa mascara pega o personagem_img e diz quais pixels ele está e nãoe stá ocupando, o que é necessário para a ser detectado a colisão
 
     @property
