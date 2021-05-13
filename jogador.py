@@ -1,5 +1,6 @@
 import pygame
 import os
+import random
 from personagem import Personagem
 from Som import *
 
@@ -16,7 +17,8 @@ LASER_JOGADOR = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_4.png"
 #carregando imagem do jogador
 JOGADOR = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "jogador_se_movendo.png")), (WH_JOGADOR, WH_JOGADOR))
 JOGADOR_PARADO = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "jogador_parado.png")), (WH_JOGADOR, WH_JOGADOR))
-
+escudo = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "escudo.png")), (WH_JOGADOR+20, WH_JOGADOR+20))
+escudo2 = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "escudo2.png")), (WH_JOGADOR+20, WH_JOGADOR+20))
 
 class Jogador(Personagem):
     def __init__(self, x: int, y: int, height: int, saude = 100):
@@ -24,6 +26,8 @@ class Jogador(Personagem):
         self.personagem_img = JOGADOR
         self.personagem_parado_img = JOGADOR_PARADO
         self.laser_img = LASER_JOGADOR
+        self.escudo_img = escudo
+        self.escudo_img2 = escudo2
         self.__mascara = pygame.mask.from_surface(self.personagem_img) #essa mascara pega o personagem_img e diz quais pixels ele está e nãoe stá ocupando, o que é necessário para a ser detectado a colisão
         self.__max_saude = saude
         self.__pontuacao = 0
@@ -58,6 +62,13 @@ class Jogador(Personagem):
             window.blit(self.personagem_parado_img, (self.x, self.y))
 
         self.barra_de_saude(window, height_barra)
+
+    def desenhar_escudo(self, window):
+        r = random.randrange(0, 2)
+        if r == 1:
+            window.blit(self.escudo_img, (self.x, self.y))
+        else:
+            window.blit(self.escudo_img2, (self.x, self.y))
 
     def dano(self, pontos):
         self.saude -= pontos

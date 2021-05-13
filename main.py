@@ -6,6 +6,7 @@ import os
 from jogador import Jogador
 from inimigo import Inimigo
 from meteoro import Meteoro
+from escudo import Escudo
 from Som import *
 from Sprites import *
 from atirar import Atirar
@@ -50,14 +51,22 @@ class Main():
         # Pontuação para o próximo nível
         pontuacao_limite = 800
 
-        # variáveis pro inimigo
+        #variáveis pro inimigo
         inimigos = []
         onda_de_inimigos = 5
         velocidade_inimigo = 2
 
-        # variáveis pro meteoro
+        #variáveis pro meteoro
         meteoros = []
         velocidade_meteoro = 1
+
+        #escudo
+        escudos = []
+        velocidade_escudo = 3
+        onda_de_escudos = 1
+        ativar_escudo = False
+        TIMERESCUDO = pygame.USEREVENT
+        pygame.time.set_timer(TIMERESCUDO, 0)
 
         # Saude
         height_barra = 10
@@ -105,6 +114,12 @@ class Main():
 
             for laser_jogador in lasers_jogador:
                 laser_jogador.desenhar(WIN)
+
+            for escudo in escudos:
+                escudo.desenhar(WIN)
+
+            if ativar_escudo:
+                jogador.desenhar_escudo(WIN)
 
             jogador.desenhar(WIN, height_barra, parado)
 
@@ -191,7 +206,10 @@ class Main():
 
                 if inimigo.colisao(jogador):
                     COLIDIU.play()
-                    jogador.dano(15)
+                    if ativar_escudo:
+                        jogador.dano(10)
+                    else:
+                        jogador.dano(15)
                     inimigos.remove(inimigo)
 
                 elif inimigo.y > HEIGHT:
@@ -229,12 +247,36 @@ class Main():
 
                 if meteoro.colisao(jogador):
                     COLIDIU.play()
-                    jogador.dano(15)
+                    if ativar_escudo:
+                        jogador.dano(10)
+                    else:
+                        jogador.dano(15)
                     meteoros.remove(meteoro)
 
                 elif meteoro.y > HEIGHT or meteoro.x > WIDTH:
-                    meteoros.remove(meteoro)     
+                    meteoros.remove(meteoro)
                 #fazer metodo fora_da_tela
+
+            #lógica do escudo
+
+            #escudos não captados
+            if len(escudos) == 0:
+                onda_de_escudos += 1
+
+                for i in range(onda_de_escudos):
+                    escudo = Escudo(random.randrange(50, WIDTH - 128), random.randrange(-8000 * (nivel / 5), -128), HEIGHT, WIDTH)  # ver depois sobre o -1500
+                    escudos.append(escudo)
+
+            for escudo in escudos[:]:
+                escudo.movimentar(velocidade_escudo)
+
+                if escudo.colisao(jogador):
+                    escudos.remove(escudo)
+                    pygame.time.set_timer(TIMERESCUDO, 5000)
+                    ativar_escudo = True
+
+                elif escudo.y > HEIGHT:
+                    escudos.remove(escudo)
 
             # EVENTOS
             # vai passar por todos os eventos que ocorreram, 60 vezes por segundo
@@ -248,6 +290,10 @@ class Main():
                         resfriamento_laser = 1
                 if event.type == tempo:
                     jogador.inc_pontuacao(10)
+
+                if event.type == TIMERESCUDO:
+                    pygame.time.set_timer(TIMERESCUDO, 0)
+                    ativar_escudo = False
 
                 mouse = pygame.mouse.get_pos()
                 click = pygame.mouse.get_pressed()
@@ -279,7 +325,10 @@ class Main():
                 if laser_inimigo.colisao(jogador):
                     lasers_inimigos.remove(laser_inimigo)
                     # Definir o som de quando o jogador tomar um dano de laser
-                    jogador.dano(15)
+                    if ativar_escudo:
+                        jogador.dano(10)
+                    else:
+                        jogador.dano(15)
 
             # Resfriamento Laser
             if resfriamento_laser >= 20:
