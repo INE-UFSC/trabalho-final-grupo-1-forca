@@ -22,6 +22,7 @@ black = (0, 0, 0)
 def botao(x, x2, y, y2, action=None):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
+    pygame.key.set_repeat()
     acabou = None
 
     if x2 > mouse[0] > x and y2 > mouse[1] > y:
