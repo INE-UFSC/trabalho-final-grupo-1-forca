@@ -9,7 +9,7 @@ WIDTH, HEIGHT = 650, 650
 largura = WIDTH
 altura = HEIGHT
 
-tela_menu_principal = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_menu_principal_com_nome.jpg")), (largura, altura))
+tela_menu_principal = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_menu.jpeg")), (largura, altura))
 tela_nome = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_nome.png")), (largura, altura))
 tela_tutorial = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_tutorial.png")), (largura, altura))
 tela_volume = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_volume.png")), (largura, altura))

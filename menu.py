@@ -56,10 +56,11 @@ class Menu():
 
             gameDisplay.blit(tela_menu_principal, (0, 0))
 
-            botao(236, 417, 326, 363, self.menu_nome)
-            botao(140, 419, 406, 444, self.menu_ranking)
-            botao(243, 398, 489, 526, self.menu_volume)
-            botao(267, 359, 566, 609, self.menu_sair)
+            botao(253, 423, 369, 404, self.menu_nome)
+            botao(259, 421, 448, 489, self.menu_ranking)
+            botao(243, 410, 489, 566, self.menu_volume)
+            botao(25, 51, 567, 927, self.menu_sair)
+            gameDisplay.blit(PORTA, (1, 540))
 
             pygame.display.update()
             clock.tick(60)
@@ -73,7 +74,6 @@ class Menu():
                     self.menu_sair()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
-                        #print(self.__nomeAtual)
                         text = ''
                     elif event.key == pygame.K_BACKSPACE:
                         text = text[:-1]
