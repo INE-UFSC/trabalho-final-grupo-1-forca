@@ -1,11 +1,9 @@
+from Sprites import *
 import pygame
 import os
-from Sprites import *
 
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-class Laser():
-    
+class Laser():   
     def __init__(self, x: int, y: int,  height: int, laser_img):
         self.__x = x
         self.__y = y
@@ -58,5 +56,5 @@ class Laser():
     def colisao(self, objeto):
         offset_x = int(objeto.x - self.x)
         offset_y = int(objeto.y - self.y)
-        
+       
         return self.mascara.overlap(objeto.mascara, (offset_x, offset_y)) != None

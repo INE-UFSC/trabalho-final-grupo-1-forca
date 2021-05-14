@@ -1,8 +1,8 @@
 import pygame
 import os
-pygame.mixer.init()
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+pygame.mixer.init()
 
 #carregando musica de fundo
 MUSICA = pygame.mixer.music.load(os.path.join(BASE_DIR, "assets", "musica_de_fundo.ogg"))

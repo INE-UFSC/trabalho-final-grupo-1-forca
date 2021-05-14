@@ -1,9 +1,7 @@
-import pygame
-import os
 from objeto import Objeto
 from Sprites import *
-
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+import pygame
+import os
 
 class Meteoro(Objeto):
     def __init__(self, x: int, y: int, height: int, width: int):

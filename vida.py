@@ -1,9 +1,8 @@
-import pygame
-import os
 from objeto import Objeto
 from Sprites import *
+import pygame
+import os
 
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 class Vida(Objeto):
     def __init__(self, x: int, y: int, height: int, width: int):

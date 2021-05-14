@@ -1,13 +1,13 @@
-import pygame
-import os
-import random
 from personagem import Personagem
-from Som import *
 from Sprites import *
+from Som import *
+import pygame
+import random
+import os
+
 
 pygame.mixer.init()
 
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 class Jogador(Personagem):
     def __init__(self, x: int, y: int, height: int, saude = 100):
@@ -61,7 +61,6 @@ class Jogador(Personagem):
 
     def dano(self, pontos):
         self.saude -= pontos
-
 
     def barra_de_saude(self, window, height_barra):
         pygame.draw.rect(window, (248, 12, 58), (self.x, self.y + self.personagem_img.get_height() + height_barra, self.personagem_img.get_width(), height_barra))

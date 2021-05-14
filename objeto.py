@@ -1,8 +1,8 @@
-import pygame
 from abc import ABC, abstractmethod
+import pygame
+
 
 class Objeto(ABC):
-
     @abstractmethod
     def __init__(self, x: int, y: int, height: int, width: int):
         self.__x = x

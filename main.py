@@ -2,34 +2,28 @@ import pygame
 import random
 import os
 
-#importar
 from jogador import Jogador
 from inimigo import Inimigo
 from meteoro import Meteoro
-from escudo import Escudo
-from vida import Vida
-from boost import Boost
-from Som import *
-from Sprites import *
 from atirar import Atirar
+from escudo import Escudo
+from boost import Boost
+from Sprites import *
+from vida import Vida
+from Som import *
+
+
 pygame.init()
 
-#definindo altura e largura da janela do meu jogo
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-WH_JOGADOR = 80
 
 #definindo que minha janela tera a largura e altura especificada
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
-#print(pygame.mixer.Sound.get_volume(musica))
-#pygame.mixer.Sound.set_volume(musica,0.5)         #Aqui vendo como o set e o get do volume funcionam, usar no menu volume depois de arrumar os assets
-#print(pygame.mixer.Sound.get_volume(musica))
-
-# Novo evento criado para aumentar a pontuação conforme passa o tempo
+#novo evento criado para aumentar a pontuação conforme passa o tempo
 tempo = pygame.USEREVENT + 1
 pygame.time.set_timer(tempo, 5000)
 
-# Fontes
+#fontes
 fonte = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.TTF"), 50)
 fonte_fim_de_jogo = pygame.font.Font(os.path.join(BASE_DIR, "assets", "levycrayola.TTF"), 60)
 
@@ -41,12 +35,11 @@ preto = (0,0,0)
 lista_sons = [MUSICA_FIM, EXPLODIU, COLIDIU, MORTE]
 
 class Main():
-
     def main(self, volume):
         run = True
         FPS = 60
         nivel = 1
-        vidas = 1
+        vidas = 5
         clock = pygame.time.Clock()
         parado = True
 
@@ -148,14 +141,14 @@ class Main():
                 WIN.blit(fim_de_jogo_label, (WIDTH / 2 - fim_de_jogo_label.get_width() / 2,
                                              HEIGHT / 2 - fim_de_jogo_label.get_height() / 2))
 
-            pygame.display.update()  # sempre que for desenhar, devemos atualizar a tela colocando a "nova imagem" por cima das outras que estavam desenhadas
-
-        # quer dizer que o jogo vai executar a no máximo 60 quadros por segundo em qualquer máquina
+            pygame.display.update() # sempre que for desenhar, devemos atualizar a tela colocando a "nova imagem" por cima das outras que estavam desenhadas
         pos_y = 0 #posicao inicial da tela de fundo
+        
         while run:
             clock.tick(FPS)
             desenhar_janela(pos_y)
             pos_y += velocidade_inimigo/2  #tela de fundo se move sempre a metade da velocidade do inimigo
+            
             if pos_y >= HEIGHT:
                 pos_y = 0  #reseta posicao da tela de fundo
 
@@ -224,16 +217,12 @@ class Main():
 
                 if inimigo.colisao(jogador):
                     COLIDIU.play()
-                    if ativar_escudo:
-                        jogador.dano(7)
-                    else:
+                    if not ativar_escudo:
                         jogador.dano(15)
                     inimigos.remove(inimigo)
 
                 elif inimigo.y > HEIGHT:
                     inimigos.remove(inimigo)
-                #Fazer um metodo fora da tela
-
 
             # lógica de criação, remoção e movimento dos meteoros
             if len(meteoros) == 0:
@@ -257,31 +246,26 @@ class Main():
                 if nivel > 6:
                     meteoro7 = Meteoro(-710, random.randrange(-600, 0), HEIGHT, WIDTH)
                     meteoros.append(meteoro7)
-                #print("m", len(meteoros))
-                # print("nivel", nivel,"vel", velocidade_meteoro)
 
             for meteoro in meteoros[:]:
                 meteoro.movimentar(velocidade_meteoro)
 
                 if meteoro.colisao(jogador):
                     COLIDIU.play()
-                    if ativar_escudo:
-                        jogador.dano(7)
-                    else:
+                    if not ativar_escudo:
                         jogador.dano(15)
                     meteoros.remove(meteoro)
 
                 elif meteoro.y > HEIGHT or meteoro.x > WIDTH:
                     meteoros.remove(meteoro)
-                #fazer metodo fora_da_tela
 
             #logica boost
             if len(boosts) == 0:
-                if random.randrange(0, 1000) == 9:
+                if random.randrange(0, 5000) == 9:
                     onda_de_boost += 1
 
                 for i in range(onda_de_boost):
-                    if random.randrange(0, 1000) == 9:
+                    if random.randrange(0, 5000) == 9:
                         boost = Boost(-110, random.randrange(0, 400), HEIGHT, WIDTH)
                         boosts.append(boost)
 
@@ -289,40 +273,40 @@ class Main():
                 boost.movimentar(velocidade_boost)
 
                 if boost.colisao(jogador):
-                    jogador.inc_pontuacao(500)
+                    jogador.inc_pontuacao(1000)
                     boosts.remove(boost)
 
                 elif boost.y > HEIGHT or boost.x > WIDTH:
                     boosts.remove(boost)
 
-
             #lógica do escudo
-            #escudos não captados
             if len(escudos) == 0:
                 onda_de_escudos += 1
 
                 for i in range(onda_de_escudos):
-                    escudo = Escudo(random.randrange(50, WIDTH - 128), random.randrange(-8000 * (nivel / 5), -128), HEIGHT, WIDTH)  # ver depois sobre o -1500
-                    escudos.append(escudo)
+                    if random.randrange(0, 5000) == 9:
+                        escudo = Escudo(random.randrange(50, WIDTH - 128), random.randrange(-8000 * (nivel / 5), -128), HEIGHT, WIDTH)  # ver depois sobre o -1500
+                        escudos.append(escudo)
 
             for escudo in escudos[:]:
                 escudo.movimentar(velocidade_escudo)
 
                 if escudo.colisao(jogador):
                     escudos.remove(escudo)
-                    pygame.time.set_timer(TIMERESCUDO, 5000)
+                    pygame.time.set_timer(TIMERESCUDO, 4000)
                     ativar_escudo = True
 
                 elif escudo.y > HEIGHT:
                     escudos.remove(escudo)
 
-            #vida
+            #lógica da vida
             if len(vidas_a_captar) == 0:
                 onda_de_vida += 1
 
                 for _ in range(onda_de_vida):
-                    vida = Vida(random.randrange(50, WIDTH - 128), random.randrange(-8000 * (nivel / 5), -128), HEIGHT, WIDTH)  # ver depois sobre o -1500
-                    vidas_a_captar.append(vida)
+                    if random.randrange(0, 5000) == 9:
+                        vida = Vida(random.randrange(50, WIDTH - 128), random.randrange(-8000 * (nivel / 5), -128), HEIGHT, WIDTH)  # ver depois sobre o -1500
+                        vidas_a_captar.append(vida)
 
             for vida in vidas_a_captar[:]:
                 vida.movimentar(velocidade_vida)
@@ -340,13 +324,14 @@ class Main():
             # EVENTOS
             # vai passar por todos os eventos que ocorreram, 60 vezes por segundo
             for event in pygame.event.get():
-                # se clicar no botão de fechar, o while se encerra, ou seja, o jogo fecha
-                if event.type == pygame.QUIT:
+                if event.type == pygame.QUIT: # se clicar no botão de fechar, o while se encerra, ou seja, o jogo fecha
                     quit()
+                
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if not resfriamento_laser:
                         lasers_jogador.append(Atirar(jogador))
                         resfriamento_laser = 1
+                
                 if event.type == tempo:
                     jogador.inc_pontuacao(10)
 
@@ -356,6 +341,7 @@ class Main():
 
                 mouse = pygame.mouse.get_pos()
                 click = pygame.mouse.get_pressed()
+                
                 if 632 > mouse[0] > 593 and 629 > mouse[1] > 569:
                     if click[0] == 1:
                         return True, jogador.pontuacao
@@ -384,9 +370,7 @@ class Main():
                 if laser_inimigo.colisao(jogador):
                     lasers_inimigos.remove(laser_inimigo)
                     # Definir o som de quando o jogador tomar um dano de laser
-                    if ativar_escudo:
-                        jogador.dano(7)
-                    else:
+                    if not ativar_escudo:
                         jogador.dano(15)
 
             # Resfriamento Laser

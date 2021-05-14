@@ -1,9 +1,9 @@
-import pygame
 from abc import ABC, abstractmethod
+import pygame
+
 
 class Personagem(ABC):
     RESFRIAMENTO = 20
-
     @abstractmethod
     def __init__(self, x: int, y: int, height: int, saude=100):
         self.__x = x

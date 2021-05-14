@@ -1,25 +1,19 @@
-import pygame
-import os
-from main import Main
+from rankingDAO import RankingDAO
 from Som import MUSICA
 from Sprites import *
-from rankingDAO import RankingDAO
+from main import Main
+import pygame
+import os
+
 
 pygame.init()
-pygame.init()
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-
-
 pygame.display.set_caption('Caderno Invaders')
 gameDisplay = pygame.display.set_mode((largura, altura))
 clock = pygame.time.Clock()
-
 black = (0, 0, 0)
 
 
-
-
-def botao(x, x2, y, y2, action=None):
+def botao(x, x2, y, y2, action = None):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
     pygame.key.set_repeat()
@@ -28,7 +22,6 @@ def botao(x, x2, y, y2, action=None):
     if x2 > mouse[0] > x and y2 > mouse[1] > y:
         if click[0] == 1 and action != None:
             acabou = action()
-
     return acabou
 
 def text_objects(text, font):
@@ -165,6 +158,7 @@ class Menu():
             gameDisplay.blit(tela_volume, (0, 0))
 
             pygame.event.wait()
+            
             #botões volume
             botao(137, 267, 410, 511, self.diminuir_volume)
             botao(403, 522, 410, 514, self.aumentar_volume)
@@ -214,7 +208,6 @@ class Menu():
             if (i[1][1],i[1][0]) not in self.__pontos_jogadores:
                 self.__pontos_jogadores.append((i[1][1], i[1][0]))
         self.__pontos_jogadores.sort(reverse=True)
-        #print(self.__pontos_jogadores)
 
     def diminuir_volume(self):
         if self.__volume > 0:
@@ -226,11 +219,10 @@ class Menu():
 
     def salvar_pontuacao(self, pontuacao):
         self.__ranking.add(self.__nomeAtual, pontuacao)
-        #print(self.__ranking.get_all())
 
     def comecar_jogo(self):
         jogo_comecado = Main()
-        encerrar, pontuacao = jogo_comecado.main(self.__volume/4)  # início do jogo
+        encerrar, pontuacao = jogo_comecado.main(self.__volume/4)
 
         if encerrar:
             self.salvar_pontuacao(pontuacao)
@@ -240,6 +232,3 @@ class Menu():
         pygame.display.quit()
         pygame.quit()
         quit()
-
-#menu = Menu()
-#menu.menu_principal()

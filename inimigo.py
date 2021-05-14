@@ -1,9 +1,8 @@
-import pygame
-import os
 from personagem import Personagem
 from Sprites import *
+import pygame
+import os
 
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 class Inimigo(Personagem):
     ID_MAP =    {
