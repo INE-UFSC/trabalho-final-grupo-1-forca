@@ -1,7 +1,6 @@
 from personagem import Personagem
 import pygame
 import random
-import os
 
 
 class Jogador(Personagem):

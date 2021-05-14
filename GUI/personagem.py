@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-import pygame
 
 
 class Personagem(ABC):
@@ -54,7 +53,11 @@ class Personagem(ABC):
         colisao = self.mascara.overlap(objeto.mascara, (offset_x, offset_y)) != None
 
         if colisao:
-            lista.remove(self)
+            try:
+                lista.remove(self)
+            except ValueError:
+                print("ValueError")
+                pass     
         return colisao
     
     def atirar(self, laser):

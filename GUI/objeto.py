@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-import pygame
 
 
 class Objeto(ABC):
@@ -45,7 +44,11 @@ class Objeto(ABC):
         colisao = self.mascara.overlap(objeto.mascara, (offset_x, offset_y)) != None
 
         if colisao:
-            lista.remove(self)
+            try:
+                lista.remove(self)
+            except ValueError:
+                print("ValueError")
+                pass  
         return colisao
 
     def fora_da_tela(self):
@@ -54,7 +57,11 @@ class Objeto(ABC):
     def movimentar(self, velocidade, lista):
         self.y += velocidade
         if self.fora_da_tela():
-            lista.remove(self)
+            try:
+                lista.remove(self)
+            except ValueError:
+                print("ValueError")
+                pass  
             
     def get_width(self):
         return self.objeto_img.get_width()

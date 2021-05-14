@@ -1,6 +1,5 @@
 from objeto import Objeto
 import pygame
-import os
 
 
 class Meteoro(Objeto):
@@ -21,4 +20,8 @@ class Meteoro(Objeto):
         self.y += velocidade 
         self.x += velocidade + 3
         if self.fora_da_tela():
-            meteoros.remove(self)
+            try:
+                meteoros.remove(self)
+            except ValueError:
+                print("ValueError")
+                pass

@@ -1,7 +1,6 @@
 from objeto import Objeto
 from Sprites import *
 import pygame
-import os
 
 
 class Vida(Objeto):

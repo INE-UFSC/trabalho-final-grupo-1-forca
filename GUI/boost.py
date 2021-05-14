@@ -20,4 +20,8 @@ class Boost(Objeto):
         self.y += velocidade
         self.x += velocidade + 3
         if self.fora_da_tela():
-            boosts.remove(self)
+            try:
+                boosts.remove(self)
+            except ValueError:
+                print("ValueError")
+                pass

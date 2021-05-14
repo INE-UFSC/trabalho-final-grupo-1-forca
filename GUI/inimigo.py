@@ -35,4 +35,8 @@ class Inimigo(Personagem):
     def movimentar(self, velocidade, inimigos):
         self.y += velocidade
         if self.fora_da_tela():
-            inimigos.remove(self)
+            try:
+                inimigos.remove(self)
+            except ValueError:
+                print("ValueError")
+                pass

@@ -1,6 +1,5 @@
 from objeto import Objeto
 import pygame
-import os
 
 
 class Laser(Objeto):   
