@@ -27,9 +27,7 @@ def botao(x, x2, y, y2, action=None):
 
     if x2 > mouse[0] > x and y2 > mouse[1] > y:
         if click[0] == 1 and action != None:
-            acabou = action()
-
-    return acabou
+            action()
 
 def text_objects(text, font):
     textSurface = font.render(text, True, black)

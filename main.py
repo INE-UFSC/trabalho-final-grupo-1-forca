@@ -224,9 +224,7 @@ class Main():
 
                 if inimigo.colisao(jogador):
                     COLIDIU.play()
-                    if ativar_escudo:
-                        jogador.dano(7)
-                    else:
+                    if not ativar_escudo:
                         jogador.dano(15)
                     inimigos.remove(inimigo)
 
@@ -265,9 +263,7 @@ class Main():
 
                 if meteoro.colisao(jogador):
                     COLIDIU.play()
-                    if ativar_escudo:
-                        jogador.dano(7)
-                    else:
+                    if not ativar_escudo:
                         jogador.dano(15)
                     meteoros.remove(meteoro)
 
@@ -384,9 +380,7 @@ class Main():
                 if laser_inimigo.colisao(jogador):
                     lasers_inimigos.remove(laser_inimigo)
                     # Definir o som de quando o jogador tomar um dano de laser
-                    if ativar_escudo:
-                        jogador.dano(7)
-                    else:
+                    if not ativar_escudo:
                         jogador.dano(15)
 
             # Resfriamento Laser
