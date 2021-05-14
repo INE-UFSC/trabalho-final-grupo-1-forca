@@ -148,7 +148,6 @@ class Menu():
             clock.tick(60)
 
     def menu_volume(self):
-
         while not self.__crashou:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
