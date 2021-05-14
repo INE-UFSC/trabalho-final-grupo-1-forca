@@ -5,7 +5,6 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 WIDTH, HEIGHT = 650, 650
 #fontes
 
-
 #TELAS DO MENU
 largura = WIDTH
 altura = HEIGHT
@@ -17,7 +16,6 @@ tela_volume = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "a
 tela_ranking = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_ranking.png")), (largura, altura))
 tela_jogo_principal = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_jogo_princial.png")), (largura, altura))
 tela_fim = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_fim.png")), (largura, altura))
-
 opcoes_barra = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "opcoes_barra.png")), (61, 90))
 
 #TELAS MAIN
@@ -36,3 +34,50 @@ barra_volume = [pygame.transform.scale(imagem_volume, (408, 30)),
                 pygame.transform.scale(imagem_volume, (102, 30)),
                 pygame.transform.scale(imagem_volume, (0, 0))
                 ]
+
+#SPRITES ESCUDO
+escudo = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "escudo.png")), (30, 30))
+escudo2 = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "escudo2.png")), (30, 30))
+
+#SPRITES INIMIGO
+#Tamanho Inimigo
+WH_INIMIGO = 75
+
+ALIEN_1 = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "inimigo_1.png")), (WH_INIMIGO, WH_INIMIGO))
+ALIEN_2 = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "inimigo_2.png")), (WH_INIMIGO, WH_INIMIGO))
+ALIEN_3 = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "inimigo_3.png")), (WH_INIMIGO, WH_INIMIGO))
+
+LASER_1 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_1.png"))
+LASER_2 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_2.png"))
+LASER_3 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_3.png"))
+
+#SPRITES JOGADOR
+# Largura e Altura do Jogador
+WH_JOGADOR = 80
+
+# Imagem Laser Jogador
+LASER_JOGADOR = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_4.png"))
+
+#carregando imagem do jogador
+JOGADOR = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "jogador_se_movendo.png")), (WH_JOGADOR, WH_JOGADOR))
+JOGADOR_PARADO = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "jogador_parado.png")), (WH_JOGADOR, WH_JOGADOR))
+escudo_no_jogador = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "escudo.png")), (WH_JOGADOR+20, WH_JOGADOR+20))
+escudo_no_jogador2 = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "escudo2.png")), (WH_JOGADOR+20, WH_JOGADOR+20))
+
+
+#LASER
+#carregando imagem dos lasers
+LASER_1 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_1.png"))
+LASER_2 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_1.png"))
+LASER_3 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_1.png"))
+LASER_4 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_1.png"))
+
+#SPRITES BOOST
+boost = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "boost_pontuacao.png")), (108, 90))
+
+#SPRITES VIDA
+vida = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "vida.png")), (30, 30))
+
+#SPRITES METEORO
+#carregando imagem dos meteoros
+meteoro = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "meteoro_fogo.png")), (108, 90))

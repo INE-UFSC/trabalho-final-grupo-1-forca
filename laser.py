@@ -1,13 +1,8 @@
 import pygame
 import os
+from Sprites import *
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-
-#carregando imagem dos lasers
-LASER_1 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_1.png"))
-LASER_2 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_1.png"))
-LASER_3 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_1.png"))
-LASER_4 = pygame.image.load(os.path.join(BASE_DIR, "assets", "laser_1.png"))
 
 class Laser():
     

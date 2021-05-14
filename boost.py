@@ -1,10 +1,9 @@
 import pygame
 import os
 from objeto import Objeto
+from Sprites import *
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-
-boost = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "boost_pontuacao.png")), (108, 90))
 
 class Boost(Objeto):
     def __init__(self, x: int, y: int, height: int, width: int):

@@ -1,11 +1,9 @@
 import pygame
 import os
 from objeto import Objeto
+from Sprites import *
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-
-escudo = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "escudo.png")), (30, 30))
-escudo2 = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "escudo2.png")), (30, 30))
 
 class Escudo(Objeto):
     def __init__(self, x: int, y: int, height: int, width: int):
