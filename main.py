@@ -48,7 +48,7 @@ class Main():
 
         #variáveis pro inimigo
         inimigos = []
-        onda_de_inimigos = 5
+        onda_de_inimigos = 3
         velocidade_inimigo = 2
 
         #variáveis pro meteoro
@@ -201,7 +201,7 @@ class Main():
 
             # lógica do inimigo
             if len(inimigos) == 0:
-                onda_de_inimigos += 5
+                onda_de_inimigos += 3
 
                 for i in range(onda_de_inimigos):
                     inimigo = Inimigo(random.randrange(50, WIDTH - 128),

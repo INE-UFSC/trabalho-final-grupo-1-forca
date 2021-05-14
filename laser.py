@@ -43,7 +43,7 @@ class Laser():
         window.blit(self.laser_img, (self.x, self.y))
     
     def fora_da_tela(self):
-        return not(self.y <= self.height and self.y >= 0)
+        return not(self.y <= self.height and self.y + WH_INIMIGO >= 0)
     
     def mover_lasers(self, velocidade, lasers):
         self.movimentar(velocidade)
