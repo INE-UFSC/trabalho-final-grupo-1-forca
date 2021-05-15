@@ -21,7 +21,7 @@ opcoes_barra = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "
 #carregando imagem do plano de funo
 PLANO_DE_FUNDO = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "tela_jogo_princial.png")), (WIDTH, HEIGHT))
 #carregando explosão para o fim de jogo
-EXPLOSAO = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "explosão.png")), (190,190))
+EXPLOSAO = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "explosao.png")), (190,190))
 #carregando porta de sair
 PORTA = pygame.transform.scale(pygame.image.load(os.path.join(BASE_DIR, "assets", "porta.png")), (82, 105))
 
