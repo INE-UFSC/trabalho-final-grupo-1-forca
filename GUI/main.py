@@ -215,7 +215,7 @@ class Main():
                 inimigo.movimentar(velocidade_inimigo, inimigos)
 
                 if random.randrange(0, 4 * FPS) == 1:
-                    lasers_inimigos.append(Atirar(inimigo, altura, largura))
+                    lasers_inimigos.append(Atirar.atirar(inimigo, altura, largura))
 
                 if inimigo.colisao(jogador, inimigos):
                     COLIDIU.play()
@@ -311,7 +311,7 @@ class Main():
                 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if not resfriamento_laser:
-                        lasers_jogador.append(Atirar(jogador, altura, largura))
+                        lasers_jogador.append(Atirar.atirar(jogador, altura, largura))
                         resfriamento_laser = 1
                 
                 if event.type == tempo:
